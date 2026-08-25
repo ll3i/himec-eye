@@ -26,6 +26,7 @@ project/mobileclip_blt.ts
 *.mp4
 *.gif
 !project/docs/demo.gif
+!project/docs/발표자료.pptx
 
 # ── 빌드 부산물 ─────────────────────────────────────────────────────
 __pycache__/

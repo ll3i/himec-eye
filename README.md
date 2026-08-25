@@ -10,6 +10,7 @@
 
 **[전체 영상 (36초 · 4개 현장)](https://youtu.be/KwVEdUqCQhc)**  ·
 **[온라인 시연 열기](https://himec-eye-panel.vercel.app)**  ·
+**[발표자료 (PPTX)](project/docs/발표자료.pptx)**  ·
 **[기술 문서](project/README.md)**
 
 ---
