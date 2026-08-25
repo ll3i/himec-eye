@@ -25,6 +25,7 @@ project/web-agents/
 project/mobileclip_blt.ts
 *.mp4
 *.gif
+!project/docs/demo.gif
 
 # ── 빌드 부산물 ─────────────────────────────────────────────────────
 __pycache__/
