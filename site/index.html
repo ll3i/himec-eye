@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HIMEC EYE — 직무별 비전 AI</title>
+<meta name="description" content="현장 사진 1장으로 안전·설비·품질을 판독하는 직무별 비전 AI 프로토타입. 검출 결과와 판정 규칙, 분석 리포트를 실제 추론 데이터로 보여줍니다.">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="HIMEC EYE">
+<meta property="og:title" content="HIMEC EYE — 직무별 비전 AI">
+<meta property="og:description" content="현장 사진 1장으로 안전·설비·품질을 판독하는 직무별 비전 AI 프로토타입. 검출 결과와 판정 규칙, 분석 리포트를 실제 추론 데이터로 보여줍니다.">
+<meta property="og:url" content="https://himec-eye-panel.vercel.app/">
+<meta property="og:image" content="https://himec-eye-panel.vercel.app/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23191f28'/%3E%3Ccircle cx='16' cy='16' r='7.5' fill='none' stroke='%233182f6' stroke-width='2.5'/%3E%3Ccircle cx='16' cy='16' r='2.6' fill='%233182f6'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+html,body{margin:0;padding:0;height:100%;background:#fff}
+body{display:flex;flex-direction:column;-webkit-font-smoothing:antialiased;word-break:keep-all;
+  font-family:Pretendard,'Malgun Gothic',system-ui,sans-serif;letter-spacing:-.02em;color:#191f28}
+header{flex:0 0 auto;display:flex;align-items:center;padding:0 12px;height:46px;
+  border-bottom:1px solid #e5e8eb;overflow-x:auto;-webkit-overflow-scrolling:touch}
+nav{display:flex;gap:2px}
+.tab{font:700 13px Pretendard,'Malgun Gothic',system-ui,sans-serif;letter-spacing:-.02em;
+  padding:7px 13px;border:none;border-radius:9px;background:transparent;color:#8b95a1;
+  cursor:pointer;white-space:nowrap}
+.tab:hover{background:#f2f4f6;color:#4e5968}
+.tab.on{background:#191f28;color:#fff}
+.tab:focus-visible{outline:2px solid #3182f6;outline-offset:1px}
+iframe{flex:1;width:100%;border:0;display:block;min-height:0}
+</style>
+</head>
+<body>
+<header>
+  <nav aria-label="화면 선택">
+  <button type="button" data-p="watch" class="tab on">관제 화면</button>
+  <button type="button" data-p="linesim" class="tab">현장 재현 영상</button>
+  <button type="button" data-p="main" class="tab">판독 결과</button>
+  <button type="button" data-p="rules" class="tab">판정 작동</button>
+  <button type="button" data-p="report" class="tab">분석 리포트</button>
+  </nav>
+</header>
+<iframe id="view" src="watch.html" title="HIMEC EYE 화면"></iframe>
+<script>
+(function () {
+  var view = document.getElementById("view");
+  var tabs = [].slice.call(document.querySelectorAll(".tab"));
+  var known = tabs.map(function (t) { return t.dataset.p; });
+  function show(p) {
+    tabs.forEach(function (t) {
+      var on = t.dataset.p === p;
+      t.classList.toggle("on", on);
+      t.setAttribute("aria-current", on ? "page" : "false");
+    });
+    if (view.getAttribute("src") !== p + ".html") view.setAttribute("src", p + ".html");
+  }
+  tabs.forEach(function (t) {
+    t.addEventListener("click", function () {
+      if (location.hash.slice(1) === t.dataset.p) return;
+      history.pushState(null, "", "#" + t.dataset.p);   // 뒤로가기로 이전 화면에 돌아갈 수 있게
+      show(t.dataset.p);
+    });
+  });
+  window.addEventListener("hashchange", function () {
+    var h = location.hash.slice(1);
+    show(known.indexOf(h) >= 0 ? h : "watch");
+  });
+  var h = location.hash.slice(1);
+  if (known.indexOf(h) >= 0) show(h);
+})();
+</script>
+</body>
+</html>

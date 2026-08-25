@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>판독 결과 — HIMEC EYE</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23191f28'/%3E%3Ccircle cx='16' cy='16' r='7.5' fill='none' stroke='%233182f6' stroke-width='2.5'/%3E%3Ccircle cx='16' cy='16' r='2.6' fill='%233182f6'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+html,body{margin:0;padding:0;background:#fff;height:100%}
+body{-webkit-font-smoothing:antialiased;word-break:keep-all}
+a{color:#3182f6;text-decoration:none}
+a:hover{color:#1b64da}
+::selection{background:#dbeafe}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-thumb{background:#e5e8eb;border-radius:8px}
+::-webkit-scrollbar-track{background:transparent}
+@media (max-width:860px){
+  html,body{height:auto}
+  .m-shell{height:auto !important;min-height:100vh;overflow:visible !important}
+  .m-grid{grid-template-columns:1fr !important;padding:0 12px 16px !important}
+  .m-rail{flex-direction:row !important;overflow-x:auto;overflow-y:hidden;padding-bottom:4px;gap:8px !important}
+  .m-rail>button{flex:0 0 200px}
+  .m-stage{min-height:56vh}
+  .m-panel{overflow:visible !important}
+}
+</style>
+</head>
+<body>
+<div id="dc-root">
+<div style="height:100vh;display:flex;flex-direction:column;background:#fff;color:#191f28;font-family:Pretendard,'Malgun Gothic',system-ui,sans-serif;line-height:1.5;letter-spacing:-.02em;overflow:hidden" class="m-shell">
+
+  <div style="display:flex;align-items:center;gap:12px;padding:0 22px;height:62px;flex:0 0 62px;background:#fff">
+    <span style="font-size:16px;font-weight:800;letter-spacing:-.03em">HIMEC<span style="color:#3182f6"> EYE</span></span>
+    <span style="font-size:14px;font-weight:600;color:#8b95a1">판독 결과</span>
+    <span style="flex:1"></span>
+    <span style="font-size:13px;font-weight:500;color:#8b95a1">{{ meta }}</span>
+    <span style="font-size:13px;font-weight:600;padding:8px 14px;border-radius:10px;background:#f2f4f6;color:#4e5968">판정 규칙</span>
+  </div>
+
+  <div style="flex:1;display:grid;grid-template-columns:236px minmax(0,1fr) 312px;gap:12px;padding:0 16px 16px;min-height:0" class="m-grid">
+
+    <div style="overflow-y:auto;display:flex;flex-direction:column;gap:4px;padding-right:2px" class="m-rail">
+      <template data-for="rail" data-as="r">
+        <button onClick="{{ r.pick }}" style="{{ r.style }}" type="button">
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="font-size:15px;font-weight:700;letter-spacing:-.03em;color:inherit">{{ r.ko }}</span>
+            <span style="flex:1"></span>
+            <span style="{{ r.badgeStyle }}">{{ r.badge }}</span>
+          </div>
+          <div style="display:flex;gap:3px;margin-top:9px">
+            <template data-for="r.bars" data-as="b">
+              <span style="{{ b.style }}"></span>
+            </template>
+          </div>
+        </button>
+      </template>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:12px;min-width:0;min-height:0" class="m-stage">
+      <div style="flex:1;display:flex;align-items:center;justify-content:center;background:#f9fafb;border-radius:20px;min-height:0;padding:20px">
+        <div style="{{ shotStyle }}" role="img" aria-label="판독 결과">
+          <template data-for="boxes" data-as="b">
+            <div style="{{ b.style }}"><span style="{{ b.tag }}">{{ b.label }}</span></div>
+          </template>
+        </div>
+      </div>
+      <div style="flex:0 0 auto;display:flex;gap:8px;overflow-x:auto;padding-bottom:2px">
+        <template data-for="strip" data-as="t">
+          <button onClick="{{ t.pick }}" style="{{ t.style }}" type="button" aria-label="사진 선택"></button>
+        </template>
+      </div>
+    </div>
+
+    <div style="overflow-y:auto;background:#f9fafb;border-radius:20px;padding:20px" class="m-panel">
+      <div style="display:flex;align-items:center;gap:9px">
+        <span style="{{ vStyle }}">{{ verdict }}</span>
+        <span style="flex:1"></span>
+        <span style="font-size:12.5px;font-weight:500;color:#8b95a1">{{ summary }}</span>
+      </div>
+
+      <div style="font-size:13px;font-weight:700;color:#8b95a1;margin:22px 0 10px">검출 항목</div>
+      <div style="display:flex;flex-direction:column;gap:3px">
+        <template data-for="rows" data-as="r">
+          <div style="{{ r.wrap }}">
+            <div style="display:flex;align-items:center;gap:8px">
+              <span style="{{ r.dot }}"></span>
+              <span style="font-size:14px;font-weight:600;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#191f28">{{ r.ko }}</span>
+              <span style="{{ r.pStyle }}">{{ r.p }}</span>
+            </div>
+            <div style="margin-top:9px;height:4px;border-radius:4px;background:#e5e8eb;position:relative">
+              <span style="{{ r.bar }}"></span>
+              <span style="{{ r.mark }}"></span>
+            </div>
+          </div>
+        </template>
+      </div>
+
+      <div style="margin-top:18px;padding:14px 16px;border-radius:14px;background:#f2f4f6;font-size:12.5px;font-weight:500;color:#8b95a1;line-height:1.7">막대는 신뢰도, 세로선은 임계값입니다.<br>최종 판정은 담당자 확인 후 확정됩니다.</div>
+    </div>
+  </div>
+</div>
+</div>
+<script>
+// 공유된 링크로 이 화면에 바로 들어온 사람도 탭 껍데기를 갖도록
+if (window.top === window.self) location.replace("index.html#main");
+</script>
+<script src="data.4a0c84d3.js"></script>
+<script src="dc-runtime.45341b84.js"></script>
+<script>
+(function () {
+  var root = document.getElementById("dc-root");
+  if (!window.DET || !window.IMG || !window.DC) {
+    root.innerHTML = '<div style="padding:28px;font:600 14px Pretendard,system-ui,sans-serif;'
+      + 'color:#8b95a1;letter-spacing:-.02em">판독 데이터를 불러오지 못했습니다. 새로고침해 주세요.</div>';
+    return;
+  }
+const DET = window.DET, IMG = window.IMG;
+const THRESH = {no_helmet:.25,no_vest:.30,no_goggles:.30,no_gloves:.30,smoke:.55,corrosion:.35,crack:.30,cable_damage:.35,weld_bad:.35,weld_defect:.35,wall_damage:.35,dry_joint:.35,incorrect_install:.30,board_damage:.35,short_circuit:.30,surface_defect:.35,cell_anomaly:.35,cell_ok:.40,cell_reversed:.25,forklift:.35,worker:.30,chassis_working:.45,car:.35,bus:.35,truck:.35};
+const TH = c => THRESH[c] !== undefined ? THRESH[c] : 0.25;
+const C = {bad:'#ff8a00', urgent:'#f04452', ok:'#15b57b', mute:'#b0b8c1'};
+
+const KO = {person:'작업자',helmet:'안전모 착용',no_helmet:'안전모 미착용',vest:'안전조끼 착용',no_vest:'안전조끼 미착용',goggles:'보안경 착용',no_goggles:'보안경 미착용',gloves:'안전장갑 착용',no_gloves:'안전장갑 미착용',cone:'안전콘',smoke:'연기',corrosion:'부식',crack:'균열',cable_damage:'케이블 손상',weld_bad:'용접 불량',weld_good:'용접 양호',weld_defect:'용접 결함부',wall_damage:'벽체 손상',ok:'양품',incorrect_install:'조립 불량',dry_joint:'냉납',board_damage:'기판 손상',short_circuit:'단락',surface_defect:'표면 결함',cell_anomaly:'셀 이상',cell_ok:'정렬 정상 셀',cell_reversed:'역극 셀',forklift:'지게차',worker:'작업자',chassis_loaded:'적재 섀시',chassis_empty:'공차 섀시',chassis_working:'상하차 진행',stacker:'스태커',car:'승용차',truck:'트럭',bus:'버스'};
+const BAD = ['no_helmet','no_vest','no_goggles','no_gloves','smoke','corrosion','crack','cable_damage','weld_bad','weld_defect','wall_damage','dry_joint','incorrect_install','board_damage','short_circuit','surface_defect','cell_anomaly','cell_reversed'];
+const URGENT = ['smoke','short_circuit','cell_reversed'];
+const ROLES = [
+  {key:'safety',    ko:'안전관리',       shots:[{id:'img51'},{id:'img46'},{id:'img50'},{id:'img52'}]},
+  {key:'defect',    ko:'시설·설비 관리',  shots:[{id:'img05'},{id:'img08'},{id:'img03'},{id:'img18'},{id:'img12'}]},
+  {key:'product',   ko:'생산 품질검사',   shots:[{id:'img41'},{id:'img37'},{id:'img40'},{id:'img42'}]},
+  {key:'polarity',  ko:'2차전지 셀 선별', shots:[{id:'img35'},{id:'img34'},{id:'img36'}]},
+  {key:'logistics', ko:'물류·운송 관리',  shots:[{id:'img24'},{id:'img25'},{id:'img22'},{id:'img26'}]},
+  {key:'parking',   ko:'주차 운영관리',   shots:[{id:'img30'},{id:'img32'},{id:'img28'}]}
+];
+
+class Component extends DCLogic {
+  state = {role:0, shot:0};
+
+  col(c){
+    return BAD.indexOf(c) >= 0 ? (URGENT.indexOf(c) >= 0 ? C.urgent : C.bad) : C.ok;
+  }
+
+  verdictOf(kept){
+    const bad = kept.filter(x => BAD.indexOf(x.c) >= 0);
+    const urgent = bad.some(x => URGENT.indexOf(x.c) >= 0);
+    return {t: urgent ? '긴급' : bad.length ? '부적합' : '적합',
+            c: urgent ? C.urgent : bad.length ? C.bad : C.ok,
+            n: bad.length};
+  }
+
+  renderVals(){
+    const ri = Math.min(this.state.role, ROLES.length-1), role = ROLES[ri];
+    const si = Math.min(this.state.shot, role.shots.length-1);
+    const cur = role.shots[si].id;
+    const it = DET[cur] || {det:[], w:1, h:1};
+    const kept = it.det.filter(x => x.p >= TH(x.c));
+    const v = this.verdictOf(kept);
+    let nShots = 0; ROLES.forEach(r => nShots += r.shots.length);
+
+    return {
+      meta: '직무 ' + ROLES.length + ' · 시험 이미지 ' + nShots,
+
+      rail: ROLES.map((r,i) => {
+        const stats = r.shots.map(s => this.verdictOf(((DET[s.id]||{det:[]}).det).filter(x => x.p >= TH(x.c))));
+        const nBad = stats.filter(s => s.t !== '적합').length;
+        const sel = i === ri;
+        return {
+          key:r.key, ko:r.ko, pick: () => this.setState({role:i, shot:0}),
+          badge: nBad ? '지적 '+nBad : '이상 없음',
+          badgeStyle:{fontSize:'11.5px', fontWeight:700, padding:'3px 8px', borderRadius:'8px', whiteSpace:'nowrap',
+                      color: nBad ? '#e0453c' : '#8b95a1',
+                      background: nBad ? (sel ? '#ffe8e8' : '#fdecec') : (sel ? '#e9edf2' : '#f2f4f6')},
+          style:{display:'block', width:'100%', textAlign:'left', font:'inherit', cursor:'pointer',
+                 padding:'14px 15px', borderRadius:'14px', border:'none',
+                 background: sel ? '#f2f4f6' : 'transparent', color: sel ? '#191f28' : '#4e5968'},
+          bars: stats.map((s,j) => ({key:j, style:{flex:1, height:'4px', borderRadius:'4px',
+                background: s.c, opacity: sel ? 1 : .35}}))
+        };
+      }),
+
+      strip: role.shots.map((s,i) => ({
+        key:s.id, pick: () => this.setState({shot:i}),
+        style:{width:'72px', height:'56px', flex:'0 0 72px', padding:0, cursor:'pointer', borderRadius:'12px',
+               backgroundImage:'url('+IMG[s.id]+')', backgroundSize:'cover', backgroundPosition:'center',
+               border:'none', outline: i===si ? '2.5px solid #3182f6' : '1px solid #e5e8eb',
+               outlineOffset: i===si ? '1px' : '-1px', opacity: i===si ? 1 : .62}
+      })),
+
+      shotStyle:{position:'relative', maxWidth:'100%', maxHeight:'100%', width:'auto', height:'100%',
+                 aspectRatio:it.w+' / '+it.h, overflow:'hidden', borderRadius:'14px',
+                 backgroundColor:'#e5e8eb', backgroundImage:'url('+IMG[cur]+')', backgroundSize:'100% 100%',
+                 boxShadow:'0 6px 24px rgba(25,31,40,.10)'},
+
+      boxes: kept.slice(0,18).map((b,i) => {
+        const col = this.col(b.c);
+        const top = b.b[1]*100;
+        return {key:i, label:(KO[b.c]||b.c)+' '+Math.round(b.p*100)+'%',
+          style:{position:'absolute', left:(b.b[0]*100)+'%', top:top+'%',
+                 width:((b.b[2]-b.b[0])*100)+'%', height:((b.b[3]-b.b[1])*100)+'%',
+                 border:'2.5px solid '+col, borderRadius:'4px', pointerEvents:'none'},
+          tag:Object.assign({position:'absolute', top: top < 7 ? '2px' : '-19px', background:col, color:'#fff',
+               font:'700 11px Pretendard,sans-serif', letterSpacing:'-.02em', padding:'1px 6px',
+               borderRadius:'5px', whiteSpace:'nowrap', lineHeight:'16px'},
+               b.b[2] > 0.7 ? {right:'-2.5px'} : {left:'-2.5px'})};
+      }),
+
+      rows: it.det.slice(0,12).map((x,i) => {
+        const adopted = x.p >= TH(x.c);
+        const col = adopted ? this.col(x.c) : C.mute;
+        return {key:i, ko:KO[x.c]||x.c, p:Math.round(x.p*100)+'%',
+          wrap:{padding:'13px 14px', borderRadius:'14px', background:'#fff', opacity: adopted ? 1 : .62},
+          dot:{width:'8px', height:'8px', borderRadius:'50%', background:col, flex:'0 0 8px'},
+          pStyle:{fontSize:'14px', fontWeight:700, fontVariantNumeric:'tabular-nums',
+                  color: adopted ? '#191f28' : '#8b95a1'},
+          bar:{position:'absolute', left:0, top:0, height:'100%', width:(x.p*100)+'%',
+               borderRadius:'4px', background:col},
+          mark:{position:'absolute', left:(TH(x.c)*100)+'%', top:'-3px', width:'2px', height:'10px',
+                borderRadius:'2px', background:'#8b95a1'}};
+      }),
+
+      verdict: v.t,
+      vStyle:{fontSize:'15px', fontWeight:700, letterSpacing:'-.03em', padding:'6px 15px', borderRadius:'999px',
+              color:'#fff', background:v.c},
+      summary:'검출 '+it.det.length+' · 채택 '+kept.length
+    };
+  }
+}
+  DC.mount(root, Component);
+})();
+</script>
+</body>
+</html>

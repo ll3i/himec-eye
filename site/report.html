@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>판독 분석 리포트 — HIMEC EYE</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23191f28'/%3E%3Ccircle cx='16' cy='16' r='7.5' fill='none' stroke='%233182f6' stroke-width='2.5'/%3E%3Ccircle cx='16' cy='16' r='2.6' fill='%233182f6'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+html,body{margin:0;padding:0}
+body{-webkit-font-smoothing:antialiased;word-break:keep-all;overflow-wrap:break-word}
+a{color:#3182f6;text-decoration:none}
+a:hover{color:#1b64da}
+body{background:#e5e8eb;padding:26px 0}
+.p-sheet{box-shadow:0 4px 20px rgba(25,31,40,.13);border-radius:4px}
+@media (max-width:960px){
+  body{padding:0}
+  .p-sheet{width:100% !important;padding:24px 18px !important;border-radius:0}
+}
+@media (max-width:560px){
+  .p-kpi{grid-template-columns:1fr 1fr !important}
+  .p-cards{grid-template-columns:1fr !important}
+}
+</style>
+</head>
+<body>
+<div id="dc-root">
+<div style="width:900px;margin:0 auto;padding:0.7in;box-sizing:border-box;background:#fff" class="p-sheet">
+  <div style="display:flex;align-items:center;gap:9px;padding-bottom:8px;border-bottom:1px solid #e5e8eb;font-family:Pretendard,sans-serif;letter-spacing:-.02em">
+    <span style="font-size:12px;font-weight:800">HIMEC<span style="color:#3182f6"> EYE</span></span>
+    <span style="font-size:11.5px;font-weight:600;color:#8b95a1">판독 분석 리포트</span>
+    <span style="flex:1"></span>
+    <span style="font-size:11px;font-weight:500;color:#8b95a1">{{ today }}</span>
+  </div>
+
+  <div style="font-family:Pretendard,'Malgun Gothic',sans-serif;color:#191f28;letter-spacing:-.02em;line-height:1.6">
+
+    <h1 style="font-size:26px;font-weight:800;letter-spacing:-.035em;margin:6px 0 6px;line-height:1.3">직무별 비전 AI 판독 분석 리포트</h1>
+    <div style="font-size:13px;font-weight:500;color:#8b95a1;margin-bottom:20px">프로토타입 검증 · 공개 데이터셋 학습 모델 · 규칙 기반 판정</div>
+
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;break-inside:avoid;margin-bottom:26px" class="p-kpi">
+      <template data-for="kpis" data-as="k">
+        <div style="background:#f9fafb;border-radius:12px;padding:13px 14px">
+          <div style="font-size:11.5px;font-weight:700;color:#8b95a1">{{ k.k }}</div>
+          <div style="{{ k.vStyle }}">{{ k.v }}</div>
+        </div>
+      </template>
+    </div>
+
+    <h2 style="font-size:15px;font-weight:800;letter-spacing:-.03em;margin:0 0 9px">1. 직무별 요약</h2>
+    <table style="width:100%;border-collapse:collapse;font-size:12.5px;margin-bottom:26px">
+      <thead>
+        <tr style="background:#f2f4f6">
+          <th style="text-align:left;padding:8px 10px;font-weight:700;color:#4e5968;border-radius:8px 0 0 8px">직무</th>
+          <th style="text-align:right;padding:8px 10px;font-weight:700;color:#4e5968">이미지</th>
+          <th style="text-align:right;padding:8px 10px;font-weight:700;color:#4e5968">검출 채택</th>
+          <th style="text-align:right;padding:8px 10px;font-weight:700;color:#4e5968">지적</th>
+          <th style="text-align:left;padding:8px 10px;font-weight:700;color:#4e5968;border-radius:0 8px 8px 0">주요 검출 항목</th>
+        </tr>
+      </thead>
+      <tbody>
+        <template data-for="roleRows" data-as="r">
+          <tr style="break-inside:avoid">
+            <td style="padding:9px 10px;border-bottom:1px solid #eef1f4;font-weight:700">{{ r.ko }}</td>
+            <td style="padding:9px 10px;border-bottom:1px solid #eef1f4;text-align:right;font-variant-numeric:tabular-nums">{{ r.shots }}</td>
+            <td style="padding:9px 10px;border-bottom:1px solid #eef1f4;text-align:right;font-variant-numeric:tabular-nums">{{ r.kept }}</td>
+            <td style="{{ r.badStyle }}">{{ r.bad }}</td>
+            <td style="padding:9px 10px;border-bottom:1px solid #eef1f4;color:#4e5968">{{ r.top }}</td>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+
+    <h2 style="font-size:15px;font-weight:800;letter-spacing:-.03em;margin:0 0 9px">2. 이미지별 판독 결과</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:26px" class="p-cards">
+      <template data-for="cards" data-as="c">
+        <figure style="margin:0;break-inside:avoid">
+          <div style="{{ c.shotStyle }}">
+            <template data-for="c.boxes" data-as="b">
+              <div style="{{ b.style }}"><span style="{{ b.tag }}">{{ b.label }}</span></div>
+            </template>
+          </div>
+          <figcaption style="display:flex;align-items:center;gap:8px;margin-top:7px">
+            <span style="font-size:11px;font-weight:700;color:#8b95a1">{{ c.no }}</span>
+            <span style="font-size:12.5px;font-weight:700">{{ c.role }}</span>
+            <span style="flex:1"></span>
+            <span style="{{ c.vStyle }}">{{ c.verdict }}</span>
+          </figcaption>
+          <div style="font-size:11.5px;font-weight:500;color:#4e5968;margin-top:4px;line-height:1.5">{{ c.items }}</div>
+        </figure>
+      </template>
+    </div>
+
+    <h2 style="font-size:15px;font-weight:800;letter-spacing:-.03em;margin:0 0 9px">3. 항목별 임계값</h2>
+    <table style="width:100%;border-collapse:collapse;font-size:12.5px;margin-bottom:26px">
+      <thead>
+        <tr style="background:#f2f4f6">
+          <th style="text-align:left;padding:8px 10px;font-weight:700;color:#4e5968;border-radius:8px 0 0 8px">클래스</th>
+          <th style="text-align:left;padding:8px 10px;font-weight:700;color:#4e5968">검출 대상</th>
+          <th style="text-align:right;padding:8px 10px;font-weight:700;color:#4e5968">임계값</th>
+          <th style="text-align:left;padding:8px 10px;font-weight:700;color:#4e5968;border-radius:0 8px 8px 0">설정 방향</th>
+        </tr>
+      </thead>
+      <tbody>
+        <template data-for="thRows" data-as="t">
+          <tr style="break-inside:avoid">
+            <td style="padding:8px 10px;border-bottom:1px solid #eef1f4;font-family:ui-monospace,monospace;font-size:11.5px;color:#8b95a1">{{ t.cls }}</td>
+            <td style="padding:8px 10px;border-bottom:1px solid #eef1f4;font-weight:600">{{ t.ko }}</td>
+            <td style="padding:8px 10px;border-bottom:1px solid #eef1f4;text-align:right;font-weight:700;font-variant-numeric:tabular-nums">{{ t.th }}</td>
+            <td style="padding:8px 10px;border-bottom:1px solid #eef1f4;color:#4e5968">{{ t.why }}</td>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+
+    <h2 style="font-size:15px;font-weight:800;letter-spacing:-.03em;margin:0 0 9px">4. 적용 제약</h2>
+    <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:24px">
+      <template data-for="limits" data-as="l">
+        <div style="display:flex;gap:10px;align-items:baseline;background:#fff7ed;border-radius:10px;padding:10px 13px;break-inside:avoid">
+          <span style="font-size:11.5px;font-weight:700;color:#c2410c;white-space:nowrap;flex:0 0 96px">{{ l.ko }}</span>
+          <span style="font-size:12px;font-weight:500;color:#7c4a21;line-height:1.55">{{ l.t }}</span>
+        </div>
+      </template>
+    </div>
+
+    <div style="background:#f2f4f6;border-radius:12px;padding:14px 16px;font-size:12px;font-weight:500;color:#8b95a1;line-height:1.7;break-inside:avoid">본 리포트의 검출 좌표·신뢰도는 공개 데이터셋으로 학습한 모델의 실제 추론 결과이며, 판정은 규칙 코드에 설정된 임계값과 조건으로 산출한 초안입니다. 사내 데이터 재학습·현장 검증 후 값이 조정될 수 있고, 최종 판정은 담당 책임자 확인 후 확정됩니다.</div>
+  </div>
+
+  <div style="display:flex;align-items:center;margin-top:22px;padding-top:8px;border-top:1px solid #e5e8eb;font-family:Pretendard,sans-serif;font-size:10.5px;font-weight:500;color:#8b95a1;letter-spacing:-.02em">
+    <span>HIMEC EYE · 직무별 비전 AI 판독 분석 리포트</span>
+    <span style="flex:1"></span>
+    <span>내부 검토용</span>
+  </div>
+</div>
+</div>
+<script>
+// 공유된 링크로 이 화면에 바로 들어온 사람도 탭 껍데기를 갖도록
+if (window.top === window.self) location.replace("index.html#report");
+</script>
+<script src="data.4a0c84d3.js"></script>
+<script src="dc-runtime.45341b84.js"></script>
+<script>
+(function () {
+  var root = document.getElementById("dc-root");
+  if (!window.DET || !window.IMG || !window.DC) {
+    root.innerHTML = '<div style="padding:28px;font:600 14px Pretendard,system-ui,sans-serif;'
+      + 'color:#8b95a1;letter-spacing:-.02em">판독 데이터를 불러오지 못했습니다. 새로고침해 주세요.</div>';
+    return;
+  }
+const DET = window.DET, IMG = window.IMG;
+const THRESH = {no_helmet:.25,no_vest:.30,no_goggles:.30,no_gloves:.30,smoke:.55,corrosion:.35,crack:.30,cable_damage:.35,weld_bad:.35,weld_defect:.35,wall_damage:.35,dry_joint:.35,incorrect_install:.30,board_damage:.35,short_circuit:.30,surface_defect:.35,cell_anomaly:.35,cell_ok:.40,cell_reversed:.25,forklift:.35,worker:.30,chassis_working:.45,car:.35,bus:.35,truck:.35};
+const TH = c => THRESH[c] !== undefined ? THRESH[c] : 0.25;
+const C = {bad:'#c2410c', urgent:'#c2181f', ok:'#0f7a52'};
+const WHY = {
+  no_helmet:'미검출 비용이 커 재현율 우선', no_vest:'표준', no_goggles:'표준', no_gloves:'표준 — 참조 수준',
+  smoke:'오경보 방지 — 정밀도 우선', corrosion:'표준', crack:'구조 안전 — 재현율 우선', cable_damage:'표준',
+  weld_bad:'재시공 요구 — 오탐 시 분쟁 소지', weld_defect:'표준', wall_damage:'표준',
+  dry_joint:'재작업 유발', incorrect_install:'치명 불량 — 재현율 우선', board_damage:'표준',
+  short_circuit:'안전 직결 — 재현율 우선', surface_defect:'표준', cell_anomaly:'표준',
+  cell_ok:'정상 판정은 보수적으로', cell_reversed:'유출 시 클레임 — 재현율 최우선',
+  forklift:'작업반경 산정 기준', worker:'협착 판정 입력 — 재현율 우선', chassis_working:'상태 판정 — 정밀도 우선',
+  car:'표준', bus:'표준', truck:'표준'
+};
+const LIMITS = {
+  safety:'화면 면적 4% 미만 작업자 제외. 안전장갑 미착용은 검출 성능 미달로 참조 수준. 야간·역광 조건 미검증.',
+  defect:'균열 폭 실측 불가(위치 특정까지). 보온 미시공·지지대 간격 등 MEP 고유 항목은 공개 데이터 부재로 미포함.',
+  product:'공개 PCB 데이터 기반으로 사내 제품군 재학습 필요. 단락·기판 손상은 검출 성능 미달로 참조 수준.',
+  polarity:'합성 데이터로 방법론을 검증한 단계. 도입 시 실제 양품·역극 셀 이미지로 재학습 필요.',
+  logistics:'실제 이격 거리 미측정(단안 기준 화면상 근접). 스태커 미검출. 작업자 검출률 개선 필요.',
+  parking:'차량이 서로 가려지는 구획에서 과소 집계 가능. 구획 매핑은 카메라별 좌표 설정 필요.'
+};
+const pad = n => (n < 10 ? '0' : '') + n;
+
+const KO = {person:'작업자',helmet:'안전모 착용',no_helmet:'안전모 미착용',vest:'안전조끼 착용',no_vest:'안전조끼 미착용',goggles:'보안경 착용',no_goggles:'보안경 미착용',gloves:'안전장갑 착용',no_gloves:'안전장갑 미착용',cone:'안전콘',smoke:'연기',corrosion:'부식',crack:'균열',cable_damage:'케이블 손상',weld_bad:'용접 불량',weld_good:'용접 양호',weld_defect:'용접 결함부',wall_damage:'벽체 손상',ok:'양품',incorrect_install:'조립 불량',dry_joint:'냉납',board_damage:'기판 손상',short_circuit:'단락',surface_defect:'표면 결함',cell_anomaly:'셀 이상',cell_ok:'정렬 정상 셀',cell_reversed:'역극 셀',forklift:'지게차',worker:'작업자',chassis_loaded:'적재 섀시',chassis_empty:'공차 섀시',chassis_working:'상하차 진행',stacker:'스태커',car:'승용차',truck:'트럭',bus:'버스'};
+const BAD = ['no_helmet','no_vest','no_goggles','no_gloves','smoke','corrosion','crack','cable_damage','weld_bad','weld_defect','wall_damage','dry_joint','incorrect_install','board_damage','short_circuit','surface_defect','cell_anomaly','cell_reversed'];
+const URGENT = ['smoke','short_circuit','cell_reversed'];
+const ROLE_DEFS = [
+  {key:'safety',    ko:'안전관리',       shots:[{id:'img51'},{id:'img46'},{id:'img50'},{id:'img52'}]},
+  {key:'defect',    ko:'시설·설비 관리',  shots:[{id:'img05'},{id:'img08'},{id:'img03'},{id:'img18'},{id:'img12'}]},
+  {key:'product',   ko:'생산 품질검사',   shots:[{id:'img41'},{id:'img37'},{id:'img40'},{id:'img42'}]},
+  {key:'polarity',  ko:'2차전지 셀 선별', shots:[{id:'img35'},{id:'img34'},{id:'img36'}]},
+  {key:'logistics', ko:'물류·운송 관리',  shots:[{id:'img24'},{id:'img25'},{id:'img22'},{id:'img26'}]},
+  {key:'parking',   ko:'주차 운영관리',   shots:[{id:'img30'},{id:'img32'},{id:'img28'}]}
+];
+class Component extends DCLogic {
+  state = {};
+
+
+  renderVals(){
+    const now = new Date();
+    const today = now.getFullYear() + '. ' + (now.getMonth()+1) + '. ' + now.getDate();
+    const det = DET;
+
+    const ROLES = ROLE_DEFS;
+    const keptOf = id => ((det[id]||{det:[]}).det).filter(x => x.p >= TH(x.c));
+
+    let nShots = 0, nKept = 0, nBad = 0;
+    ROLES.forEach(r => r.shots.forEach(s => {
+      const k = keptOf(s.id);
+      nShots++; nKept += k.length; nBad += k.filter(x => BAD.indexOf(x.c) >= 0).length;
+    }));
+
+    const shots = [];
+    ROLES.forEach(r => r.shots.forEach(s => shots.push({id:s.id, role:r})));
+
+    const usedCls = {};
+    shots.forEach(s => ((det[s.id]||{det:[]}).det).forEach(x => { if (x.p >= TH(x.c)) usedCls[x.c] = 1; }));
+
+    const bigNum = {fontSize:'21px', fontWeight:800, letterSpacing:'-.03em', marginTop:'2px'};
+
+    return {
+      today,
+      kpis: [
+        {key:'a', k:'검증 직무', v:String(ROLES.length), vStyle:bigNum},
+        {key:'b', k:'시험 이미지', v:String(nShots), vStyle:bigNum},
+        {key:'c', k:'검출 채택', v:String(nKept), vStyle:bigNum},
+        {key:'d', k:'지적 항목', v:String(nBad), vStyle:Object.assign({}, bigNum, {color:'#c2181f'})}
+      ],
+
+      roleRows: ROLES.map(r => {
+        let kept = 0, bad = 0; const counts = {};
+        r.shots.forEach(s => keptOf(s.id).forEach(x => {
+          kept++; counts[x.c] = (counts[x.c]||0)+1;
+          if (BAD.indexOf(x.c) >= 0) bad++;
+        }));
+        const top = Object.keys(counts).sort((a,b) => counts[b]-counts[a]).slice(0,3)
+          .map(c => (KO[c]||c) + ' ' + counts[c]).join(' · ');
+        return {key:r.key, ko:r.ko, shots:String(r.shots.length), kept:String(kept),
+          bad: bad ? String(bad) : '—', top: top || '—',
+          badStyle:{padding:'9px 10px', borderBottom:'1px solid #eef1f4', textAlign:'right',
+                    fontVariantNumeric:'tabular-nums', fontWeight: bad ? 700 : 500,
+                    color: bad ? '#c2181f' : '#8b95a1'}};
+      }),
+
+      cards: shots.map((s, i) => {
+        const it = det[s.id] || {det:[], w:1, h:1};
+        const kept = keptOf(s.id);
+        const counts = {};
+        kept.forEach(x => { counts[x.c] = (counts[x.c]||0)+1; });
+        const bad = kept.filter(x => BAD.indexOf(x.c) >= 0);
+        const urgent = bad.some(x => URGENT.indexOf(x.c) >= 0);
+        const vcol = urgent ? C.urgent : bad.length ? C.bad : C.ok;
+        return {
+          key:s.id, no:pad(i+1), role:s.role.ko,
+          verdict: urgent ? '긴급' : bad.length ? '부적합' : '적합',
+          vStyle:{fontSize:'10.5px', fontWeight:700, padding:'2px 8px', borderRadius:'7px',
+                  color:'#fff', background:vcol},
+          items: Object.keys(counts).map(c => (KO[c]||c) + ' ' + counts[c]).join(' · ') || '검출 없음',
+          shotStyle:{position:'relative', width:'100%', aspectRatio:it.w+' / '+it.h, overflow:'hidden',
+                     borderRadius:'8px', backgroundColor:'#e5e8eb',
+                     backgroundImage:'url('+IMG[s.id]+')', backgroundSize:'100% 100%',
+                     breakInside:'avoid'},
+          boxes: kept.slice(0,14).map((b,j) => {
+            const col = BAD.indexOf(b.c) >= 0 ? (URGENT.indexOf(b.c) >= 0 ? C.urgent : C.bad) : C.ok;
+            const top = b.b[1]*100;
+            return {key:j, label:(KO[b.c]||b.c)+' '+Math.round(b.p*100),
+              style:{position:'absolute', left:(b.b[0]*100)+'%', top:top+'%',
+                     width:((b.b[2]-b.b[0])*100)+'%', height:((b.b[3]-b.b[1])*100)+'%',
+                     border:'1.5px solid '+col, borderRadius:'3px'},
+              tag:Object.assign({position:'absolute', top: top < 9 ? '1px' : '-13px', background:col, color:'#fff',
+                   font:'700 8px Pretendard,sans-serif', letterSpacing:'-.02em', padding:'0 4px',
+                   borderRadius:'3px', whiteSpace:'nowrap', lineHeight:'12px'},
+                   b.b[2] > 0.7 ? {right:'-1.5px'} : {left:'-1.5px'})};
+          })
+        };
+      }),
+
+      thRows: Object.keys(usedCls).sort().map(c => ({
+        key:c, cls:c, ko:KO[c]||c, th:TH(c).toFixed(2), why:WHY[c] || '기본값 · 판정 입력·참조용'
+      })),
+
+      limits: ROLES.map(r => ({key:r.key, ko:r.ko, t:LIMITS[r.key] || ''}))
+    };
+  }
+}
+  DC.mount(root, Component);
+})();
+</script>
+</body>
+</html>

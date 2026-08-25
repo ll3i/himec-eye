@@ -1,0 +1,38 @@
+# ── 개인정보 · 제출물 (공개 저장소에 올리지 않는다) ─────────────────────
+# 작성 완료된 제출서류에는 성명·연락처·서명 이미지가 들어 있다.
+project/reports/
+canvas/
+*.hwp
+*.hml
+*.zip
+
+# ── 자격증명 ────────────────────────────────────────────────────────
+.env
+.env.*
+.vercel/
+*.local
+
+# ── 대용량 산출물 (재현 스크립트로 다시 만들 수 있다) ──────────────────
+project/data/
+project/runs/
+project/models/
+project/web/
+project/himec-eye/
+project/web-agents/
+*.pt
+*.onnx
+# 572MB 모델 체크포인트
+project/mobileclip_blt.ts
+*.mp4
+*.gif
+
+# ── 빌드 부산물 ─────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+node_modules/
+site/_src/
+
+# ── 주최측 배포 원본 (재배포하지 않는다) ─────────────────────────────
+제1회 HIMEC AI 활용 아이디어 공모전/
+*.dc.html

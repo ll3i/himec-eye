@@ -1,0 +1,9 @@
+data/processed/
+data/raw/
+data/interim/
+runs/*/weights/*.pt
+runs/*.log
+*.pt
+__pycache__/
+reports/out/
+reports/_pipeline_test.html

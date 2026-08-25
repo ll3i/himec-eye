@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>현장 재현 영상</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23191f28'/%3E%3Ccircle cx='16' cy='16' r='7.5' fill='none' stroke='%233182f6' stroke-width='2.5'/%3E%3Ccircle cx='16' cy='16' r='2.6' fill='%233182f6'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+html,body{margin:0;padding:0;background:#0d1116;height:100%}
+body{-webkit-font-smoothing:antialiased;word-break:keep-all}
+a{color:#5ca3dd;text-decoration:none}
+a:hover{color:#8fc3ea}
+@keyframes recblink{0%,45%{opacity:1}55%,100%{opacity:.15}}
+@keyframes scanmove{0%{top:-2%}100%{top:100%}}
+body{background:#05070a;display:flex;align-items:center;justify-content:center}
+#dc-root{width:100%;height:100%;max-width:calc(100vh * 16 / 9);max-height:calc(100vw * 9 / 16)}
+@media (max-width:700px){
+  #dc-root{max-width:none;max-height:none}
+  .l-split{grid-template-columns:1fr !important;grid-template-rows:1.15fr 1fr !important}
+}
+</style>
+</head>
+<body>
+<div id="dc-root">
+<div style="width:100%;height:100%;display:flex;flex-direction:column;background:#0d1116;color:#e9edf2;font-family:Pretendard,'Malgun Gothic',system-ui,sans-serif;letter-spacing:-.02em;overflow:hidden;border-radius:14px">
+
+  <div style="flex:0 0 auto;display:flex;align-items:center;gap:9px;padding:9px 14px;background:#11161c">
+    <span style="width:7px;height:7px;border-radius:50%;background:#f04452;animation:recblink 1.4s infinite"></span>
+    <span style="font-size:11.5px;font-weight:700;letter-spacing:.06em;color:#f04452">REC</span>
+    <span style="font-size:12.5px;font-weight:600;color:#e9edf2">{{ sceneTitle }}</span>
+    <span style="flex:1"></span>
+    <span style="font-size:11.5px;font-weight:600;font-variant-numeric:tabular-nums;color:#7e8b99">{{ clock }}</span>
+  </div>
+
+  <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#1c232b;min-height:0" class="l-split">
+
+    <div style="position:relative;background:#05070a;display:flex;align-items:center;justify-content:center;overflow:hidden">
+      <div style="{{ camStyle }}">
+        <template data-for="boxes" data-as="b">
+          <div style="{{ b.style }}"><span style="{{ b.tag }}">{{ b.label }}</span></div>
+        </template>
+        <div style="{{ scanStyle }}"></div>
+      </div>
+      <div style="position:absolute;left:10px;bottom:9px;display:flex;align-items:center;gap:6px">
+        <span style="font-size:10.5px;font-weight:700;letter-spacing:.06em;color:#e9edf2;background:rgba(13,17,22,.72);padding:3px 8px;border-radius:6px">CAM 01 · 현장</span>
+      </div>
+    </div>
+
+    <div style="position:relative;background:#161b22;display:flex;align-items:center;justify-content:center;padding:4% 4% 0">
+      <div style="width:100%;max-width:520px">
+        <div style="border-radius:10px 10px 0 0;background:#20262e;padding:6px 10px;display:flex;align-items:center;gap:6px">
+          <span style="width:7px;height:7px;border-radius:50%;background:#3a424c"></span>
+          <span style="width:7px;height:7px;border-radius:50%;background:#3a424c"></span>
+          <span style="width:7px;height:7px;border-radius:50%;background:#3a424c"></span>
+          <span style="flex:1"></span>
+          <span style="font-size:10px;font-weight:700;letter-spacing:.06em;color:#7e8b99">HIMEC EYE</span>
+        </div>
+        <div style="background:#fff;color:#191f28;padding:14px 16px 16px;border-radius:0 0 10px 10px;min-height:150px">
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="{{ vStyle }}">{{ verdict }}</span>
+            <span style="flex:1"></span>
+            <span style="font-size:11.5px;font-weight:600;color:#8b95a1">{{ summary }}</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:4px;margin-top:12px">
+            <template data-for="rows" data-as="r">
+              <div style="{{ r.wrap }}">
+                <span style="{{ r.dot }}"></span>
+                <span style="font-size:12.5px;font-weight:600;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ r.ko }}</span>
+                <span style="{{ r.pStyle }}">{{ r.p }}</span>
+              </div>
+            </template>
+          </div>
+          <div style="{{ noteStyle }}">{{ note }}</div>
+        </div>
+      </div>
+      <div style="position:absolute;right:12px;bottom:9px;font-size:10.5px;font-weight:700;letter-spacing:.06em;color:#7e8b99">노트북 판독 화면</div>
+    </div>
+  </div>
+
+  <div style="flex:0 0 auto;display:flex;align-items:center;gap:10px;padding:8px 14px;background:#11161c">
+    <span style="font-size:11px;font-weight:600;color:#7e8b99">재현 영상 · 실제 판독 데이터 기준</span>
+    <span style="flex:1"></span>
+    <div style="flex:0 0 44%;height:3px;border-radius:3px;background:#232a33;position:relative;overflow:hidden">
+      <span style="{{ progStyle }}"></span>
+    </div>
+  </div>
+</div>
+</div>
+<script>
+// 공유된 링크로 이 화면에 바로 들어온 사람도 탭 껍데기를 갖도록
+if (window.top === window.self) location.replace("index.html#linesim");
+</script>
+<script src="data.4a0c84d3.js"></script>
+<script src="dc-runtime.45341b84.js"></script>
+<script>
+(function () {
+  var root = document.getElementById("dc-root");
+  if (!window.DET || !window.IMG || !window.DC) {
+    root.innerHTML = '<div style="padding:28px;font:600 14px Pretendard,system-ui,sans-serif;'
+      + 'color:#8b95a1;letter-spacing:-.02em">판독 데이터를 불러오지 못했습니다. 새로고침해 주세요.</div>';
+    return;
+  }
+const DET = window.DET, IMG = window.IMG;
+const THRESH = {no_helmet:.25,no_vest:.30,no_goggles:.30,no_gloves:.30,smoke:.55,corrosion:.35,crack:.30,cable_damage:.35,weld_bad:.35,weld_defect:.35,wall_damage:.35,dry_joint:.35,incorrect_install:.30,board_damage:.35,short_circuit:.30,surface_defect:.35,cell_anomaly:.35,cell_ok:.40,cell_reversed:.25,forklift:.35,worker:.30,chassis_working:.45,car:.35,bus:.35,truck:.35};
+const TH = c => THRESH[c] !== undefined ? THRESH[c] : 0.25;
+const C = {bad:'#ff8a00', urgent:'#f04452', ok:'#15b57b'};
+const SCENES = [
+  {id:'img34', title:'2차전지 셀 선별 — 트레이 촬영', note:'역극 셀 격리 대상으로 표시됩니다.'},
+  {id:'img50', title:'안전관리 — 순회 촬영', note:'보호구 준수율이 구역별로 집계됩니다.'},
+  {id:'img24', title:'물류·운송 — 야드 촬영', note:'지게차와 작업자 거리로 협착 위험을 판정합니다.'}
+];
+const DUR = 10;
+
+const KO = {person:'작업자',helmet:'안전모 착용',no_helmet:'안전모 미착용',vest:'안전조끼 착용',no_vest:'안전조끼 미착용',goggles:'보안경 착용',no_goggles:'보안경 미착용',gloves:'안전장갑 착용',no_gloves:'안전장갑 미착용',cone:'안전콘',smoke:'연기',corrosion:'부식',crack:'균열',cable_damage:'케이블 손상',weld_bad:'용접 불량',weld_good:'용접 양호',weld_defect:'용접 결함부',wall_damage:'벽체 손상',ok:'양품',incorrect_install:'조립 불량',dry_joint:'냉납',board_damage:'기판 손상',short_circuit:'단락',surface_defect:'표면 결함',cell_anomaly:'셀 이상',cell_ok:'정렬 정상 셀',cell_reversed:'역극 셀',forklift:'지게차',worker:'작업자',chassis_loaded:'적재 섀시',chassis_empty:'공차 섀시',chassis_working:'상하차 진행',stacker:'스태커',car:'승용차',truck:'트럭',bus:'버스'};
+const BAD = ['no_helmet','no_vest','no_goggles','no_gloves','smoke','corrosion','crack','cable_damage','weld_bad','weld_defect','wall_damage','dry_joint','incorrect_install','board_damage','short_circuit','surface_defect','cell_anomaly','cell_reversed'];
+const URGENT = ['smoke','short_circuit','cell_reversed'];
+class Component extends DCLogic {
+  state = {t:0};
+
+  componentDidMount(){
+    this.iv = setInterval(() => this.setState(s => ({t: (s.t + 0.1) % (DUR * SCENES.length)})), 100);
+  }
+  componentWillUnmount(){ clearInterval(this.iv); }
+
+  col(c){
+    return BAD.indexOf(c) >= 0 ? (URGENT.indexOf(c) >= 0 ? C.urgent : C.bad) : C.ok;
+  }
+
+  renderVals(){
+    const det = DET, t = this.state.t;
+    const base = {boxes:[], rows:[], verdict:'대기', summary:'', clock:'00:00', sceneTitle:'',
+      camStyle:{position:'relative', width:'92%', aspectRatio:'4 / 3', background:'#05070a', borderRadius:'6px'},
+      scanStyle:{display:'none'}, progStyle:{position:'absolute', left:0, top:0, height:'100%', width:'0%', background:'#3182f6'},
+      vStyle:{fontSize:'13px', fontWeight:800, padding:'4px 12px', borderRadius:'999px', color:'#8b95a1', background:'#f2f4f6'},
+      note:'', noteStyle:{display:'none'}};
+    if (!DET) return base;
+
+    const si = Math.floor(t / DUR) % SCENES.length;
+    const local = t - si * DUR;
+    const sc = SCENES[si];
+    const it = det[sc.id] || {det:[], w:4, h:3};
+    const kept = it.det.filter(x => x.p >= TH(x.c)).slice(0, 10);
+
+    const scanning = local >= 0.8 && local < 2.2;
+    const revealStart = 2.2, perBox = 0.28;
+    const shown = local < revealStart ? 0 : Math.min(kept.length, Math.floor((local - revealStart) / perBox) + 1);
+    const done = local >= revealStart + kept.length * perBox + 0.4;
+
+    const vis = kept.slice(0, shown);
+    const bad = vis.filter(x => BAD.indexOf(x.c) >= 0);
+    const urgent = bad.some(x => URGENT.indexOf(x.c) >= 0);
+    const vcol = urgent ? C.urgent : bad.length ? C.bad : C.ok;
+    const mm = String(Math.floor(t / 60)).padStart(2,'0'), ss = String(Math.floor(t % 60)).padStart(2,'0');
+
+    return {
+      sceneTitle: sc.title,
+      clock: mm + ':' + ss,
+      camStyle:{position:'relative', width:'92%', maxHeight:'92%', aspectRatio:it.w + ' / ' + it.h,
+                overflow:'hidden', borderRadius:'6px', backgroundColor:'#05070a',
+                backgroundImage:'url(' + IMG[sc.id] + ')', backgroundSize:'100% 100%'},
+      scanStyle: scanning
+        ? {position:'absolute', left:0, right:0, height:'12%', pointerEvents:'none',
+           background:'linear-gradient(180deg,rgba(49,130,246,0) 0%,rgba(49,130,246,.35) 70%,rgba(49,130,246,.9) 100%)',
+           animation:'scanmove 1.4s linear infinite'}
+        : {display:'none'},
+      boxes: vis.map((b,i) => {
+        const col = this.col(b.c);
+        const top = b.b[1]*100;
+        const age = local - (revealStart + i * perBox);
+        return {key:i, label:(KO[b.c]||b.c) + ' ' + Math.round(b.p*100) + '%',
+          style:{position:'absolute', left:(b.b[0]*100)+'%', top:top+'%',
+                 width:((b.b[2]-b.b[0])*100)+'%', height:((b.b[3]-b.b[1])*100)+'%',
+                 border:'2.5px solid '+col, borderRadius:'4px', pointerEvents:'none',
+                 boxShadow: age < 0.4 ? '0 0 0 4px '+col+'44' : 'none'},
+          tag:Object.assign({position:'absolute', top: top < 8 ? '2px' : '-17px', background:col, color:'#fff',
+               font:'700 10px Pretendard,sans-serif', letterSpacing:'-.02em', padding:'0 5px',
+               borderRadius:'5px', whiteSpace:'nowrap', lineHeight:'15px'},
+               b.b[2] > 0.7 ? {right:'-2.5px'} : {left:'-2.5px'})};
+      }),
+      rows: vis.slice(0,6).map((x,i) => ({
+        key:i, ko:KO[x.c]||x.c, p:Math.round(x.p*100)+'%',
+        wrap:{display:'flex', alignItems:'center', gap:'8px', padding:'8px 10px', borderRadius:'10px', background:'#f9fafb'},
+        dot:{width:'7px', height:'7px', borderRadius:'50%', background:this.col(x.c), flex:'0 0 7px'},
+        pStyle:{fontSize:'12.5px', fontWeight:700, fontVariantNumeric:'tabular-nums', color:'#191f28'}
+      })),
+      verdict: shown === 0 ? (scanning ? '판독 중' : '대기') : (urgent ? '긴급' : bad.length ? '부적합' : '적합'),
+      vStyle: shown === 0
+        ? {fontSize:'13px', fontWeight:800, padding:'4px 12px', borderRadius:'999px', color:'#8b95a1', background:'#f2f4f6'}
+        : {fontSize:'13px', fontWeight:800, padding:'4px 12px', borderRadius:'999px', color:'#fff', background:vcol},
+      summary: shown === 0 ? '' : '검출 ' + shown + ' / ' + kept.length,
+      note: sc.note,
+      noteStyle: done
+        ? {marginTop:'12px', padding:'9px 11px', borderRadius:'10px', background:'#e8f2fe',
+           fontSize:'11.5px', fontWeight:600, color:'#1b64da'}
+        : {display:'none'},
+      progStyle:{position:'absolute', left:0, top:0, height:'100%', borderRadius:'3px',
+                 width:(t / (DUR * SCENES.length) * 100) + '%', background:'#3182f6'}
+    };
+  }
+}
+  DC.mount(root, Component);
+})();
+</script>
+</body>
+</html>

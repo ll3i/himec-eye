@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>관제 화면 — HIMEC EYE</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23191f28'/%3E%3Ccircle cx='16' cy='16' r='7.5' fill='none' stroke='%233182f6' stroke-width='2.5'/%3E%3Ccircle cx='16' cy='16' r='2.6' fill='%233182f6'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+html,body{margin:0;padding:0;background:#05070a;height:100%}
+body{-webkit-font-smoothing:antialiased;word-break:keep-all}
+a{color:#5ca3dd;text-decoration:none}
+a:hover{color:#8fc3ea}
+@keyframes recblink{0%,45%{opacity:1}55%,100%{opacity:.15}}
+@keyframes scanmove{0%{top:-4%}100%{top:100%}}
+@keyframes sirenpulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.93)}}
+@keyframes edgeflash{0%,100%{box-shadow:inset 0 0 0 5px rgba(255,45,63,.25)}50%{box-shadow:inset 0 0 0 9px rgba(255,45,63,.95)}}
+@keyframes headpop{0%{opacity:0;transform:scale(1.14)}100%{opacity:1;transform:scale(1)}}
+</style>
+</head>
+<body>
+<div id="dc-root">
+<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#05070a;font-family:Pretendard,'Malgun Gothic',system-ui,sans-serif;letter-spacing:-.02em;overflow:hidden">
+
+  <div style="{{ stageStyle }}">
+   <div style="position:absolute;inset:0;container-type:inline-size">
+
+    <div style="position:absolute;inset:0;overflow:hidden">
+      <template data-for="boxes" data-as="b">
+        <div style="{{ b.style }}"><span style="{{ b.tag }}">{{ b.label }}</span></div>
+      </template>
+    </div>
+
+    <div style="{{ scanStyle }}"></div>
+    <div style="{{ edgeStyle }}"></div>
+
+    <div style="position:absolute;left:2.2%;top:3.4%;display:flex;align-items:center;gap:2%">
+      <span style="font-size:2.1cqw;font-weight:800;letter-spacing:-.03em;color:#191f28;background:#fff;padding:.7cqw 1.5cqw;border-radius:99px;white-space:nowrap;box-shadow:0 .3cqw 1cqw rgba(0,0,0,.35)">{{ timeOfDay }}</span>
+      <span style="display:flex;align-items:center;gap:.6cqw">
+        <span style="width:1cqw;height:1cqw;border-radius:50%;background:#ff2d3f;animation:recblink 1.4s infinite"></span>
+        <span style="font-size:1.35cqw;font-weight:800;letter-spacing:.08em;color:#ff2d3f;text-shadow:0 .15cqw .5cqw rgba(0,0,0,.9)">REC</span>
+      </span>
+    </div>
+
+    <div style="position:absolute;right:2.2%;top:3.9%;font-family:ui-monospace,'Consolas',monospace;font-size:1.5cqw;font-weight:600;color:#fff;text-shadow:0 .15cqw .5cqw rgba(0,0,0,.95);white-space:nowrap">{{ stamp }}</div>
+
+    <div style="{{ alertWrap }}">
+      <div style="{{ alertInner }}">
+        <svg viewBox="0 0 48 48" style="{{ sirenStyle }}" aria-hidden="true">
+          <rect x="21.4" y="1.5" width="5.2" height="7.4" rx="2.6" fill="currentColor"></rect>
+          <path d="M24 11c-6.6 0-12 5.4-12 12v11h24V23c0-6.6-5.4-12-12-12z" fill="currentColor"></path>
+          <rect x="8.5" y="35.5" width="31" height="7.5" rx="2.6" fill="currentColor"></rect>
+          <path d="M4.6 16.2 9.9 19M43.4 16.2 38.1 19M7.2 27.4H1.8M40.8 27.4h5.4" stroke="currentColor" stroke-width="3.1" stroke-linecap="round" fill="none"></path>
+        </svg>
+        <div style="{{ headStyle }}">{{ headline }}</div>
+        <div style="{{ subStyle }}">{{ sub }}</div>
+      </div>
+    </div>
+
+    <div style="position:absolute;left:2.2%;bottom:3.6%;display:flex;align-items:center;gap:1cqw">
+      <span style="font-size:1.4cqw;font-weight:800;letter-spacing:.05em;color:#fff;background:rgba(5,7,10,.72);padding:.5cqw 1.1cqw;border-radius:.6cqw;white-space:nowrap">{{ cam }}</span>
+      <span style="font-size:1.4cqw;font-weight:600;color:#e9edf2;text-shadow:0 .15cqw .5cqw rgba(0,0,0,.95);white-space:nowrap">{{ site }}</span>
+    </div>
+
+    <div style="position:absolute;right:2.2%;bottom:3.6%;font-size:1.25cqw;font-weight:600;color:#b0b8c1;text-shadow:0 .15cqw .5cqw rgba(0,0,0,.95);white-space:nowrap">재현 영상 · 실제 판독 데이터</div>
+
+    <div style="position:absolute;left:0;right:0;bottom:0;height:.5cqw;background:rgba(255,255,255,.14)">
+      <span style="{{ progStyle }}"></span>
+    </div>
+   </div>
+  </div>
+</div>
+</div>
+<script>
+// 공유된 링크로 이 화면에 바로 들어온 사람도 탭 껍데기를 갖도록
+if (window.top === window.self) location.replace("index.html#watch");
+</script>
+<script src="data.4a0c84d3.js"></script>
+<script src="dc-runtime.45341b84.js"></script>
+<script>
+(function () {
+  var root = document.getElementById("dc-root");
+  if (!window.DET || !window.IMG || !window.DC) {
+    root.innerHTML = '<div style="padding:28px;font:600 14px Pretendard,system-ui,sans-serif;'
+      + 'color:#8b95a1;letter-spacing:-.02em">판독 데이터를 불러오지 못했습니다. 새로고침해 주세요.</div>';
+    return;
+  }
+const DET = window.DET, IMG = window.IMG;
+const THRESH = {no_helmet:.25,no_vest:.30,no_goggles:.30,no_gloves:.30,smoke:.55,corrosion:.35,crack:.30,cable_damage:.35,weld_bad:.35,weld_defect:.35,wall_damage:.35,dry_joint:.35,incorrect_install:.30,board_damage:.35,short_circuit:.30,surface_defect:.35,cell_anomaly:.35,cell_ok:.40,cell_reversed:.25,forklift:.35,worker:.30,chassis_working:.45,car:.35,bus:.35,truck:.35};
+const TH = c => THRESH[c] !== undefined ? THRESH[c] : 0.25;
+
+const KO = {person:'작업자',helmet:'안전모 착용',no_helmet:'안전모 미착용',vest:'안전조끼 착용',no_vest:'안전조끼 미착용',goggles:'보안경 착용',no_goggles:'보안경 미착용',gloves:'안전장갑 착용',no_gloves:'안전장갑 미착용',cone:'안전콘',smoke:'연기',corrosion:'부식',crack:'균열',cable_damage:'케이블 손상',weld_bad:'용접 불량',weld_good:'용접 양호',weld_defect:'용접 결함부',wall_damage:'벽체 손상',ok:'양품',incorrect_install:'조립 불량',dry_joint:'냉납',board_damage:'기판 손상',short_circuit:'단락',surface_defect:'표면 결함',cell_anomaly:'셀 이상',cell_ok:'정렬 정상 셀',cell_reversed:'역극 셀',forklift:'지게차',worker:'작업자',chassis_loaded:'적재 섀시',chassis_empty:'공차 섀시',chassis_working:'상하차 진행',stacker:'스태커',car:'승용차',truck:'트럭',bus:'버스'};
+
+// 클래스 -> 규칙, 규칙 -> 위험도·경보 문구·근거. 판정 작동 화면의 규칙표와 같은 값이다.
+const CLS2RULE = {no_helmet:'S-01',no_vest:'S-02',no_goggles:'S-03',no_gloves:'S-04',smoke:'S-05',
+  corrosion:'D-01',crack:'D-02',cable_damage:'D-03',weld_bad:'D-04',weld_defect:'D-05',wall_damage:'D-06',
+  dry_joint:'P-01',incorrect_install:'P-02',board_damage:'P-03',short_circuit:'P-04',surface_defect:'P-05',
+  cell_anomaly:'P-06',cell_reversed:'X-01',chassis_working:'L-02'};
+const RULE = {
+  'S-01':{r:3,h:'안전모 미착용',       s:'산업안전보건기준규칙 제32조①1 · 작업중지 후 착용 조치'},
+  'S-02':{r:2,h:'안전조끼 미착용',     s:'동 규칙 제32조①10 · 착용 후 작업 재개'},
+  'S-03':{r:2,h:'보안경 미착용',       s:'동 규칙 제32조①4 · 용접·절단 구간 착용 의무화'},
+  'S-04':{r:2,h:'안전장갑 미착용',     s:'동 규칙 제32조①5 · 보호장갑 지급·착용 확인'},
+  'S-05':{r:4,h:'연기 감지 · 화재 의심', s:'화재예방법 제17조 · 즉시 작업중지 · 화기감시자 확인'},
+  'D-01':{r:2,h:'부식 진행',           s:'기계설비법 제17조 · 케레이징 후 방청도장 재시공'},
+  'D-02':{r:3,h:'균열 검출',           s:'시설물 안전·유지관리 세부지침 · 크랙게이지 실측 후 보수'},
+  'D-03':{r:3,h:'케이블 피복 손상',    s:'KEC 132 · 즉시 교체 또는 절연처리'},
+  'D-04':{r:3,h:'용접부 불량',         s:'KS B 0845 · 그라인딩 후 재용접 · 비파괴검사'},
+  'D-05':{r:2,h:'용접 결함부',         s:'KS B 0845 · 보수용접 후 전수 외관검사'},
+  'D-06':{r:2,h:'벽체 손상',           s:'시설물 안전·유지관리 세부지침 · 구조 안전성 검토'},
+  'P-01':{r:3,h:'접합 불량 (냉납)',    s:'IPC-A-610 Class 2 · 재작업 후 재검사'},
+  'P-02':{r:3,h:'조립·삽입 불량',      s:'IPC-A-610 · 재실장 후 초·중·종물 검사 강화'},
+  'P-03':{r:2,h:'기판 손상',           s:'IPC-A-610 · 손상 정도 판정 후 폐기 또는 수리'},
+  'P-04':{r:4,h:'단락 검출',           s:'전기용품안전관리법 · 즉시 격리 · 동일 로트 홀드'},
+  'P-05':{r:2,h:'표면 결함',           s:'KS A ISO 2859-1 · 외관 등급 판정 후 선별'},
+  'P-06':{r:3,h:'셀 이상 검출',        s:'KS C IEC 61215 · 이상 셀 격리 후 정밀검사'},
+  'X-01':{r:4,h:'역극 셀 검출',        s:'KS C IEC 62133 · 즉시 격리 · 트레이 전수 재검'},
+  'L-01':{r:4,h:'지게차 협착 위험',    s:'산업안전보건기준규칙 제172조 · 즉시 작업중지 · 유도자 배치'},
+  'L-02':{r:1,h:'상하차 작업 진행 중', s:'동 규칙 제39조 · 작업구역 통제선 확인'}
+};
+const HUE = {4:'#ff2d3f', 3:'#ff8a00', 2:'#f5a623', 1:'#3182f6'};
+// 관계 추론 판정에서 '관계를 이루는' 객체들 — 이 박스들을 경보색으로 묶어 보여준다
+const HOT = {'L-01':['forklift','worker'], 'S-01':['person'], 'S-02':['person']};
+const TAG = {4:'긴급', 3:'부적합', 2:'조건부', 1:'참고'};
+
+// 관제 상황을 대표하는 장면 — 위험도 4 셋과 3 하나
+const SCENES = [
+  {id:'img24', cam:'CAM 03', site:'실내 하역 구역',         time:'오전 09:20', clock:'09:20'},
+  {id:'img52', cam:'CAM 07', site:'옥외 작업구역',          time:'오후 14:35', clock:'14:35'},
+  {id:'img34', cam:'CAM 11', site:'2차전지 셀 선별 라인',   time:'오후 16:10', clock:'16:10'},
+  {id:'img08', cam:'CAM 02', site:'구조물 점검 구간',       time:'오전 11:05', clock:'11:05'}
+];
+const DUR = 9;          // 장면당 초
+const T_SCAN = 1.0, T_BOX = 2.4, T_ALERT = 3.6, PER_BOX = 0.16;
+
+const ov = (inner, outer) => {
+  const x1 = Math.max(inner[0], outer[0]), y1 = Math.max(inner[1], outer[1]);
+  const x2 = Math.min(inner[2], outer[2]), y2 = Math.min(inner[3], outer[3]);
+  if (x2 <= x1 || y2 <= y1) return 0;
+  const a = (inner[2]-inner[0]) * (inner[3]-inner[1]);
+  return a <= 0 ? 0 : ((x2-x1)*(y2-y1)) / a;
+};
+// 관계 추론 — rules.py derive_ppe_findings / derive_logistics_findings 와 동일 조건
+const derivePPE = (dets) => {
+  const persons = dets.filter(x => x.c === 'person' && x.p >= 0.35 &&
+    (x.b[2]-x.b[0]) * (x.b[3]-x.b[1]) >= 0.04);
+  if (!persons.length) return [];
+  const worn = {helmet: dets.filter(x=>x.c==='helmet').map(x=>x.b),
+                vest: dets.filter(x=>x.c==='vest').map(x=>x.b)};
+  const direct = new Set(dets.filter(x => x.p >= TH(x.c)).map(x => x.c));
+  const out = [];
+  [['helmet','no_helmet',0,0.35],['vest','no_vest',0.20,0.75]].forEach(z => {
+    const okc = z[0], ngc = z[1], t0 = z[2], t1 = z[3];
+    if (direct.has(ngc)) return;
+    let n = 0;
+    persons.forEach(p => {
+      const h = p.b[3]-p.b[1];
+      const zone = [p.b[0], p.b[1]+h*t0, p.b[2], p.b[1]+h*t1];
+      if (worn[okc].some(b => ov(b, zone) >= 0.3)) return;
+      n++;
+    });
+    if (n) out.push({id:CLS2RULE[ngc], n:n, d:1});
+  });
+  return out;
+};
+const deriveLogi = (dets) => {
+  const forks = dets.filter(x => x.c === 'forklift' && x.p >= TH('forklift'));
+  const workers = dets.filter(x => x.c === 'worker' && x.p >= TH('worker'));
+  let n = 0;
+  forks.forEach(f => {
+    const w = f.b[2]-f.b[0], h = f.b[3]-f.b[1];
+    const zone = [f.b[0]-w*0.35, f.b[1]-h*0.175, f.b[2]+w*0.35, f.b[3]+h*0.175];
+    workers.forEach(k => { if (ov(k.b, zone) >= 0.35) n++; });
+  });
+  return n ? [{id:'L-01', n:n, d:1}] : [];
+};
+const pad = n => (n < 10 ? '0' : '') + n;
+
+class Component extends DCLogic {
+  state = {t:0};
+
+  componentDidMount(){
+    this.iv = setInterval(() => this.setState(s => ({t: (s.t + 0.1) % (DUR * SCENES.length)})), 100);
+  }
+  componentWillUnmount(){ clearInterval(this.iv); }
+
+  findingOf(it){
+    const counts = {};
+    it.det.forEach(x => { if (x.p >= TH(x.c)) counts[x.c] = (counts[x.c]||0)+1; });
+    let found = Object.keys(counts).filter(c => CLS2RULE[c]).map(c => ({id:CLS2RULE[c], n:counts[c]}));
+    if (it.task === 'safety') found = found.concat(derivePPE(it.det));
+    if (it.task === 'logistics') found = found.concat(deriveLogi(it.det));
+    found.sort((a,b) => (RULE[b.id].r - RULE[a.id].r) || (b.n - a.n));
+    return found.length ? found[0] : null;
+  }
+
+  renderVals(){
+    const t = this.state.t;
+    const si = Math.floor(t / DUR) % SCENES.length;
+    const local = t - si * DUR;
+    const sc = SCENES[si];
+    const it = DET[sc.id] || {det:[], w:4, h:3, task:''};
+    const kept = it.det.filter(x => x.p >= TH(x.c)).slice(0, 12);
+
+    const scanning = local >= T_SCAN && local < T_BOX;
+    const shown = local < T_BOX ? 0 : Math.min(kept.length, Math.floor((local - T_BOX) / PER_BOX) + 1);
+    const vis = kept.slice(0, shown);
+
+    const f = this.findingOf(it);
+    const risk = f ? RULE[f.id].r : 0;
+    const hot = f && f.d ? (HOT[f.id] || []) : [];
+    const col = f ? HUE[risk] : '#15b57b';
+    const alerting = local >= T_ALERT;
+
+    const ss = Math.floor(local) % 60;
+    const stamp = '2026-08-24  ' + sc.clock + ':' + pad(ss);
+
+    return {
+      timeOfDay: sc.time, cam: sc.cam, site: sc.site, stamp: stamp,
+
+      stageStyle:{position:'relative', aspectRatio:it.w + ' / ' + it.h,
+                  width:'min(100vw, calc(100vh * ' + (it.w/it.h).toFixed(4) + '))',
+                  maxWidth:'100%', maxHeight:'100%',
+                  overflow:'hidden', backgroundColor:'#05070a',
+                  backgroundImage:'url(' + IMG[sc.id] + ')', backgroundSize:'100% 100%'},
+
+      boxes: vis.map((b,i) => {
+        const bad = !!CLS2RULE[b.c];
+        const bc = hot.indexOf(b.c) >= 0 ? HUE[risk]
+                 : bad ? (RULE[CLS2RULE[b.c]].r === 4 ? '#ff2d3f' : '#ff8a00') : '#15b57b';
+        const top = b.b[1]*100;
+        return {key:i, label:(KO[b.c]||b.c) + ' ' + Math.round(b.p*100) + '%',
+          style:{position:'absolute', left:(b.b[0]*100)+'%', top:top+'%',
+                 width:((b.b[2]-b.b[0])*100)+'%', height:((b.b[3]-b.b[1])*100)+'%',
+                 border:'0.32cqw solid ' + bc, borderRadius:'.3cqw', pointerEvents:'none',
+                 boxShadow:'0 0 0 .15cqw rgba(5,7,10,.55)'},
+          tag:Object.assign({position:'absolute', top: top < 9 ? '.2cqw' : '-2.1cqw', background:bc,
+               color:'#fff', font:'800 1.25cqw Pretendard,sans-serif', letterSpacing:'-.02em',
+               padding:'0 .6cqw', borderRadius:'.35cqw', whiteSpace:'nowrap', lineHeight:'1.9cqw'},
+               b.b[2] > 0.72 ? {right:'-0.32cqw'} : {left:'-0.32cqw'})};
+      }),
+
+      scanStyle: scanning
+        ? {position:'absolute', left:0, right:0, height:'14%', pointerEvents:'none',
+           background:'linear-gradient(180deg,rgba(49,130,246,0) 0%,rgba(49,130,246,.32) 68%,rgba(49,130,246,.92) 100%)',
+           animation:'scanmove 1.4s linear infinite'}
+        : {display:'none'},
+
+      edgeStyle: alerting && risk >= 3
+        ? {position:'absolute', inset:0, pointerEvents:'none',
+           animation:'edgeflash 1s ease-in-out infinite'}
+        : {display:'none'},
+
+      alertWrap: alerting
+        ? {position:'absolute', inset:0, display:'flex', alignItems:'center',
+           justifyContent:'center', pointerEvents:'none', padding:'0 4%'}
+        : {display:'none'},
+      alertInner:{display:'flex', flexDirection:'column', alignItems:'center', gap:'1.2cqw',
+                  animation:'headpop .28s ease-out'},
+      sirenStyle:{width:'8cqw', height:'8cqw', color:col, display:'block',
+                  filter:'drop-shadow(0 .4cqw 1cqw rgba(5,7,10,.85))',
+                  animation: risk >= 4 ? 'sirenpulse .7s ease-in-out infinite' : 'none'},
+      headline: f ? RULE[f.id].h + (risk >= 4 ? ' !!' : '') : '이상 없음',
+      headStyle:{fontSize:'5.2cqw', fontWeight:800, letterSpacing:'-.04em', color:col,
+                 textAlign:'center', lineHeight:1.1,
+                 textShadow:'0 .3cqw 1.2cqw rgba(5,7,10,.95), 0 0 .5cqw rgba(5,7,10,.9)'},
+      sub: f ? TAG[risk] + ' · ' + RULE[f.id].s : '검출된 지적사항 없음',
+      subStyle:{fontSize:'1.6cqw', fontWeight:700, letterSpacing:'-.02em', color:'#fff',
+                background:'rgba(5,7,10,.78)', padding:'.85cqw 1.8cqw', borderRadius:'1.1cqw',
+                textAlign:'center', maxWidth:'86%', lineHeight:1.45},
+
+      progStyle:{position:'absolute', left:0, top:0, height:'100%',
+                 width:(t / (DUR * SCENES.length) * 100) + '%', background:'#3182f6'}
+    };
+  }
+}
+  DC.mount(root, Component);
+})();
+</script>
+</body>
+</html>

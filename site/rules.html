@@ -1,0 +1,502 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>직무별 상세 작동 — HIMEC EYE</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23191f28'/%3E%3Ccircle cx='16' cy='16' r='7.5' fill='none' stroke='%233182f6' stroke-width='2.5'/%3E%3Ccircle cx='16' cy='16' r='2.6' fill='%233182f6'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+html,body{margin:0;padding:0;background:#fff;scroll-behavior:smooth}
+body{-webkit-font-smoothing:antialiased;word-break:keep-all;overflow-wrap:break-word}
+a{color:#3182f6;text-decoration:none}
+a:hover{color:#1b64da}
+::selection{background:#dbeafe}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-thumb{background:#e5e8eb;border-radius:8px}
+::-webkit-scrollbar-track{background:transparent}
+@media (max-width:860px){
+  .r-grid{grid-template-columns:1fr !important;gap:16px !important}
+  .r-nav{position:static !important;flex-direction:row !important;flex-wrap:wrap}
+  .r-nav>button{flex:1 1 150px}
+  .r-panel{grid-template-columns:1fr !important}
+}
+</style>
+</head>
+<body>
+<div id="dc-root">
+<div style="min-height:100vh;background:#fff;color:#191f28;font-family:Pretendard,'Malgun Gothic',system-ui,sans-serif;line-height:1.6;letter-spacing:-.02em">
+
+  <div style="position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:12px;padding:0 22px;height:62px;background:rgba(255,255,255,.92);backdrop-filter:blur(8px)">
+    <span style="font-size:16px;font-weight:800;letter-spacing:-.03em">HIMEC<span style="color:#3182f6"> EYE</span></span>
+    <span style="font-size:14px;font-weight:600;color:#8b95a1">판정 작동</span>
+    <span style="flex:1"></span>
+    <span style="font-size:13px;font-weight:600;padding:8px 14px;border-radius:10px;background:#f2f4f6;color:#4e5968">판독 결과</span>
+  </div>
+
+  <div style="max-width:1240px;margin:0 auto;padding:0 22px 96px">
+
+    <header style="padding:34px 0 30px">
+      <h1 style="font-size:clamp(24px,2.7vw,30px);line-height:1.3;font-weight:800;letter-spacing:-.035em;margin:0 0 15px">직무별 판정 작동</h1>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;font-size:13px;font-weight:600;color:#4e5968">
+        <span style="padding:7px 13px;border-radius:10px;background:#f2f4f6">YOLO11n · 2.6M</span>
+        <span style="padding:7px 13px;border-radius:10px;background:#f2f4f6">416 px · JPG 1장</span>
+        <span style="padding:7px 13px;border-radius:10px;background:#f2f4f6">CPU 추론</span>
+        <span style="padding:7px 13px;border-radius:10px;background:#f2f4f6">규칙 기반 · LLM 미사용</span>
+      </div>
+    </header>
+
+    <div style="display:grid;grid-template-columns:212px minmax(0,1fr);gap:28px;align-items:start" class="r-grid">
+
+      <nav style="position:sticky;top:76px;display:flex;flex-direction:column;gap:3px" class="r-nav">
+        <div style="font-size:13px;font-weight:700;color:#8b95a1;padding:0 4px 8px">직무</div>
+        <template data-for="nav" data-as="n">
+          <button onClick="{{ n.pick }}" style="{{ n.style }}" type="button">
+            <span style="display:block;font-size:15px;font-weight:700;letter-spacing:-.03em;color:inherit">{{ n.ko }}</span>
+            <span style="display:block;font-size:12.5px;font-weight:500;color:#8b95a1;margin-top:1px">{{ n.one }}</span>
+          </button>
+        </template>
+      </nav>
+
+      <div style="min-width:0">
+        <template data-for="blocks" data-as="d">
+          <section id="{{ d.key }}" style="padding-bottom:40px">
+
+            <div style="display:flex;align-items:center;gap:11px;flex-wrap:wrap;padding-bottom:16px">
+              <h2 style="font-size:24px;font-weight:800;letter-spacing:-.035em;margin:0">{{ d.ko }}</h2>
+              <span style="font-size:12px;font-weight:700;letter-spacing:.06em;color:#3182f6;background:#e8f2fe;padding:4px 9px;border-radius:8px">{{ d.code }}</span>
+              <span style="flex:1"></span>
+              <span style="font-family:ui-monospace,monospace;font-size:11.5px;color:#8b95a1">{{ d.weights }}</span>
+            </div>
+
+            <div style="border-radius:20px;background:#f9fafb;padding:16px;margin-bottom:26px">
+              <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px">
+                <template data-for="d.thumbs" data-as="t">
+                  <button onClick="{{ t.pick }}" style="{{ t.style }}" type="button" aria-label="시험 사진 선택"></button>
+                </template>
+                <div style="flex:1;min-width:8px"></div>
+                <button onClick="{{ d.toggleWeak }}" style="{{ d.weakStyle }}" type="button">{{ d.weakLabel }}</button>
+              </div>
+              <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.02fr);gap:14px" class="r-panel">
+                <div style="display:flex;align-items:flex-start;justify-content:center">
+                  <div style="{{ d.shotStyle }}" role="img" aria-label="선택한 사진의 판독 결과">
+                    <template data-for="d.boxes" data-as="b">
+                      <div style="{{ b.style }}"><span style="{{ b.tag }}">{{ b.label }}</span></div>
+                    </template>
+                  </div>
+                </div>
+                <div style="min-width:0;background:#fff;border-radius:16px;padding:16px">
+                  <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;padding-bottom:14px">
+                    <span style="{{ d.verdictStyle }}">{{ d.verdict }}</span>
+                    <span style="flex:1"></span>
+                    <span style="font-size:12.5px;font-weight:500;color:#8b95a1">{{ d.summary }}</span>
+                  </div>
+                  <template data-for="d.findings" data-as="f">
+                    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:11px 12px;border-radius:12px;background:#f9fafb;margin-bottom:5px">
+                      <span style="font-family:ui-monospace,monospace;font-size:11.5px;font-weight:700;color:#3182f6;white-space:nowrap;flex:0 0 auto">{{ f.id }}</span>
+                      <span style="font-size:13.5px;font-weight:700;letter-spacing:-.03em;flex:1;min-width:0">{{ f.title }}</span>
+                      <span style="{{ f.tag }}">{{ f.how }}</span>
+                      <span style="{{ f.chip }}">{{ f.risk }}</span>
+                    </div>
+                  </template>
+                  <div style="padding:14px 2px 8px;font-size:12.5px;font-weight:700;color:#8b95a1">검출 목록 · 신뢰도 / 임계값</div>
+                  <template data-for="d.rows" data-as="r">
+                    <div style="display:grid;grid-template-columns:minmax(0,1fr) 42px 42px 52px;gap:8px;align-items:center;padding:6px 2px">
+                      <div style="font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ r.ko }} <span style="font-family:ui-monospace,monospace;font-size:10.5px;font-weight:500;color:#8b95a1">{{ r.cls }}</span></div>
+                      <div style="font-size:12.5px;font-weight:700;text-align:right;font-variant-numeric:tabular-nums">{{ r.p }}</div>
+                      <div style="font-size:12.5px;font-weight:500;text-align:right;color:#8b95a1;font-variant-numeric:tabular-nums">{{ r.th }}</div>
+                      <div style="{{ r.chip }}">{{ r.state }}</div>
+                    </div>
+                  </template>
+                  <div style="padding:12px 2px 0;font-size:12px;font-weight:500;color:#8b95a1">{{ d.foot }}</div>
+                </div>
+              </div>
+            </div>
+
+            <div style="font-size:15px;font-weight:800;letter-spacing:-.03em;margin-bottom:10px">검출 클래스와 임계값</div>
+            <div style="overflow-x:auto;border-radius:16px;background:#f9fafb;padding:4px 16px 10px">
+              <div style="display:grid;grid-template-columns:150px 1fr 84px minmax(150px,1.1fr);gap:0;min-width:580px">
+                <div style="padding:12px 8px;font-size:12.5px;font-weight:700;color:#8b95a1">클래스</div>
+                <div style="padding:12px 8px;font-size:12.5px;font-weight:700;color:#8b95a1">검출 대상</div>
+                <div style="padding:12px 8px;font-size:12.5px;font-weight:700;color:#8b95a1;text-align:right">임계값</div>
+                <div style="padding:12px 8px;font-size:12.5px;font-weight:700;color:#8b95a1">설정 근거</div>
+                <template data-for="d.classes" data-as="c">
+                  <div style="padding:11px 8px;border-top:1px solid #e9ecef;font-family:ui-monospace,monospace;font-size:12px;color:#8b95a1">{{ c.cls }}</div>
+                  <div style="padding:11px 8px;border-top:1px solid #e9ecef;font-size:13.5px;font-weight:600">{{ c.ko }}</div>
+                  <div style="padding:11px 8px;border-top:1px solid #e9ecef;font-size:13px;font-weight:700;text-align:right;font-variant-numeric:tabular-nums">{{ c.conf }}</div>
+                  <div style="padding:11px 8px;border-top:1px solid #e9ecef;font-size:12.5px;font-weight:500;color:#8b95a1;line-height:1.5">{{ c.why }}</div>
+                </template>
+              </div>
+            </div>
+
+            <div style="font-size:12px;font-weight:500;color:#8b95a1;margin-top:8px;padding-left:4px">* 기본 임계값 0.25 — 판정 입력·참조용</div>
+
+            <div style="font-size:15px;font-weight:800;letter-spacing:-.03em;margin:26px 0 10px">판정 규칙</div>
+            <div style="overflow-x:auto;border-radius:16px;background:#f9fafb;padding:6px 16px 12px">
+              <div style="display:grid;grid-template-columns:56px minmax(140px,1fr) minmax(0,1.4fr) minmax(0,.9fr) 56px;gap:0;min-width:700px">
+                <template data-for="d.rules" data-as="r">
+                  <div style="padding:13px 8px;border-top:1px solid #e9ecef;font-family:ui-monospace,monospace;font-size:11.5px;font-weight:700;color:#3182f6">{{ r.id }}</div>
+                  <div style="padding:13px 8px;border-top:1px solid #e9ecef;font-size:13.5px;font-weight:700;letter-spacing:-.03em">{{ r.title }}</div>
+                  <div style="padding:13px 8px;border-top:1px solid #e9ecef;font-size:12.5px;font-weight:500;color:#4e5968;line-height:1.5">{{ r.cond }}</div>
+                  <div style="padding:13px 8px;border-top:1px solid #e9ecef;font-size:12px;font-weight:500;color:#8b95a1;line-height:1.5">{{ r.basis }}</div>
+                  <div style="padding:13px 8px;border-top:1px solid #e9ecef"><span style="{{ r.chip }}">{{ r.risk }}</span></div>
+                </template>
+              </div>
+            </div>
+
+            <div style="margin-top:16px;display:flex;gap:11px;align-items:baseline;background:#fff7ed;border-radius:14px;padding:14px 16px">
+              <span style="font-size:12.5px;font-weight:700;color:#c2410c;white-space:nowrap">현재 제약</span>
+              <span style="font-size:13px;font-weight:500;color:#7c4a21;line-height:1.6">{{ d.limit }}</span>
+            </div>
+          </section>
+        </template>
+
+        <div style="margin-top:10px;padding:16px 18px;border-radius:14px;background:#f2f4f6;font-size:12.5px;font-weight:500;color:#8b95a1;line-height:1.7">표기 임계값은 현재 규칙 코드 설정값 · 사내 데이터 재학습 후 조정 · 최종 판정은 담당 책임자 확인</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+<script>
+// 공유된 링크로 이 화면에 바로 들어온 사람도 탭 껍데기를 갖도록
+if (window.top === window.self) location.replace("index.html#rules");
+</script>
+<script src="data.4a0c84d3.js"></script>
+<script src="dc-runtime.45341b84.js"></script>
+<script>
+(function () {
+  var root = document.getElementById("dc-root");
+  if (!window.DET || !window.IMG || !window.DC) {
+    root.innerHTML = '<div style="padding:28px;font:600 14px Pretendard,system-ui,sans-serif;'
+      + 'color:#8b95a1;letter-spacing:-.02em">판독 데이터를 불러오지 못했습니다. 새로고침해 주세요.</div>';
+    return;
+  }
+const DET = window.DET, IMG = window.IMG;
+const HUE = {4:'#f04452',3:'#ff8a00',2:'#f5a623',1:'#3182f6'};
+const HUE_BG = {4:'#fdecec',3:'#fff3e5',2:'#fef6e6',1:'#e8f2fe'};
+const RISK_KO = {4:'긴급',3:'높음',2:'보통',1:'참고'};
+const REF = '0.25 *';
+
+const D = [
+{key:'safety',code:'SAFETY',ko:'안전관리',weights:'runs/safety_yolo11n_416',
+ pipe:[
+  {n:'01',tag:'입력',title:'현장 사진 1장',body:'설치 카메라 또는 순회 촬영 이미지. EXIF의 위치·일시를 함께 기록합니다.'},
+  {n:'02',tag:'검출',title:'11개 클래스 검출',body:'작업자·보호구 착용/미착용·안전콘·연기를 좌표와 함께 검출합니다.'},
+  {n:'03',tag:'판정',title:'직접 검출 + 관계 추론',body:'미착용 클래스는 직접 검출과 작업자·보호구 위치 관계를 함께 사용합니다.'},
+  {n:'04',tag:'산출',title:'지적사항 + 준수율',body:'규정번호·위험도·근거·조치가 채워진 지적사항과 보호구 준수율을 산출합니다.'}],
+ classes:[
+  {cls:'person',ko:'작업자',conf:REF,why:'관계 추론의 기준 객체. 신뢰도 0.35 이상만 판정 대상'},
+  {cls:'helmet',ko:'안전모 착용',conf:REF,why:'준수율 산출 및 미착용 판정의 반대 근거'},
+  {cls:'no_helmet',ko:'안전모 미착용',conf:'0.25',why:'미검출 비용이 큼 — 재현율 우선'},
+  {cls:'vest',ko:'안전조끼 착용',conf:REF,why:'준수율 산출 입력'},
+  {cls:'no_vest',ko:'안전조끼 미착용',conf:'0.30',why:'표준'},
+  {cls:'goggles',ko:'보안경 착용',conf:REF,why:'준수율 산출 입력'},
+  {cls:'no_goggles',ko:'보안경 미착용',conf:'0.30',why:'표준'},
+  {cls:'gloves',ko:'안전장갑 착용',conf:REF,why:'준수율 산출 입력'},
+  {cls:'no_gloves',ko:'안전장갑 미착용',conf:'0.30',why:'표준 — 현재 검출 성능 미달로 참조 수준'},
+  {cls:'cone',ko:'안전콘',conf:REF,why:'작업구역 표시 참조'},
+  {cls:'smoke',ko:'연기',conf:'0.55',why:'오경보 시 알림 신뢰도 하락 — 정밀도 우선'}],
+ rules:[
+  {id:'S-01',title:'안전모 미착용 작업자',risk:3,cond:'no_helmet 0.25 이상 직접 검출, 또는 작업자 박스 상단 0~35% 구간에 안전모 박스 겹침 30% 미만',basis:'산업안전보건기준에 관한 규칙 제32조①1',action:'해당 작업자 즉시 작업중지 후 착용 조치, 작업 전 TBM 보호구 점검 강화'},
+  {id:'S-02',title:'안전조끼 미착용 작업자',risk:2,cond:'no_vest 0.30 이상 직접 검출, 또는 작업자 박스 20~75% 구간에 조끼 박스 겹침 30% 미만',basis:'동 규칙 제32조①10',action:'착용 후 작업 재개, 중장비 동선 구간 상시 확인'},
+  {id:'S-03',title:'보안경 미착용 작업자',risk:2,cond:'no_goggles 0.30 이상 검출',basis:'동 규칙 제32조①4',action:'용접·절단·연마 구간 착용 의무화, 보호구 비치 점검'},
+  {id:'S-04',title:'안전장갑 미착용 작업자',risk:2,cond:'no_gloves 0.30 이상 검출',basis:'동 규칙 제32조①5',action:'작업 특성에 맞는 보호장갑 지급·착용 확인'},
+  {id:'S-05',title:'연기 발생 — 화재 의심',risk:4,cond:'smoke 0.55 이상 검출',basis:'화재예방법 제17조 / 동 규칙 제241조',action:'즉시 작업중지·화기감시자 확인·소화기 조치, 소방서 신고 여부 판단'}],
+ logicTitle:'관계 추론 — 미착용 판정 조건',
+ logic:[
+  {t:'작업자(person) 신뢰도 0.35 이상, 화면 면적 4% 이상인 대상만 판정합니다. 멀리 있는 작업자는 보호구 판별이 불가하므로 제외합니다.'},
+  {t:'안전모는 작업자 박스의 상단 0~35% 구간, 안전조끼는 20~75% 구간을 판정 영역으로 사용합니다.'},
+  {t:'해당 구간과 착용 보호구 박스의 겹침이 30% 이상이면 착용으로 처리하고, 그 미만이면 미착용으로 추정합니다.'},
+  {t:'미착용 클래스가 임계값 이상으로 직접 검출된 경우에는 직접 검출 결과를 우선합니다.'},
+  {t:'미착용 학습 데이터가 착용 대비 6.3:1로 부족하여(helmet 3,561 / no_helmet 561) 모델 대신 규칙으로 보완한 구조입니다.'}],
+ output:'지적사항(규정번호·위험도·근거 조항·조치사항·검출 좌표), 보호구 착용 준수율 = 착용 / (착용 + 미착용), 촬영 위치·일시',
+ limit:'화면 면적 4% 미만 작업자 제외. 안전장갑 미착용은 검출 성능 미달로 참조 수준. 야간·역광 조건 미검증.'},
+
+{key:'defect',code:'DEFECT',ko:'시설·설비 관리',weights:'runs/defect_yolo11n_416',
+ pipe:[
+  {n:'01',tag:'입력',title:'점검 순회 사진',body:'기계실·배관·전기실 점검 사진을 그대로 사용합니다.'},
+  {n:'02',tag:'검출',title:'7개 클래스 검출',body:'부식·균열·케이블 손상·용접 상태·벽체 손상을 위치와 함께 검출합니다.'},
+  {n:'03',tag:'판정',title:'유형 판정 + 면적비 등급',body:'검출 면적이 화면에서 차지하는 비율로 정량 등급을 매깁니다.'},
+  {n:'04',tag:'산출',title:'점검일지 초안 · 시정 확인',body:'이전 사진과 비교해 해소·잔존·신규를 판정하고 완료율을 산출합니다.'}],
+ classes:[
+  {cls:'corrosion',ko:'배관·철물 부식',conf:'0.35',why:'표준'},
+  {cls:'crack',ko:'균열',conf:'0.30',why:'구조 안전 관련 — 재현율 우선'},
+  {cls:'cable_damage',ko:'전선·케이블 피복 손상',conf:'0.35',why:'표준'},
+  {cls:'weld_bad',ko:'용접부 불량',conf:'0.35',why:'재시공 요구 — 오탐 시 분쟁 소지'},
+  {cls:'weld_defect',ko:'용접 결함부(기공·언더컷)',conf:'0.35',why:'표준'},
+  {cls:'weld_good',ko:'용접부 양호',conf:REF,why:'정상 판정 참조 — 지적사항으로 채택하지 않음'},
+  {cls:'wall_damage',ko:'벽체·구조체 손상',conf:'0.35',why:'표준'}],
+ rules:[
+  {id:'D-01',title:'배관·철물 부식',risk:2,cond:'corrosion 0.35 이상 검출 + 면적비 등급 부여',basis:'기계설비법 제17조 / 기계설비 유지관리기준',action:'부식부 케레이징 후 방청도장 재시공, 진행성은 구간 배관 교체 검토'},
+  {id:'D-02',title:'균열 (0.3mm 이상 보수 대상)',risk:3,cond:'crack 0.30 이상 검출 + 면적비 등급 부여',basis:'시설물 안전·유지관리 실시 세부지침',action:'크랙게이지 실측 후 0.3mm 이상이면 에폭시 주입 보수, 진행성 정기 계측'},
+  {id:'D-03',title:'전선·케이블 피복 손상',risk:3,cond:'cable_damage 0.35 이상 검출',basis:'전기설비기술기준 제52조 / KEC 132',action:'즉시 교체 또는 절연처리, 절연저항 1MΩ 이상 측정 후 성적서 제출'},
+  {id:'D-04',title:'배관 용접부 불량',risk:3,cond:'weld_bad 0.35 이상 검출',basis:'기계설비공사 표준시방서 / KS B 0845',action:'그라인딩 후 재용접, 비파괴검사(RT/PT) 실시 및 성적서 제출'},
+  {id:'D-05',title:'용접 결함부 (기공·언더컷)',risk:2,cond:'weld_defect 0.35 이상 검출',basis:'KS B 0845 / KS B 0896',action:'결함 유형·크기 판정 후 보수용접, 동일 시공자 용접부 전수 외관검사'},
+  {id:'D-06',title:'벽체·구조체 손상',risk:2,cond:'wall_damage 0.35 이상 검출 + 면적비 등급 부여',basis:'시설물 안전·유지관리 실시 세부지침',action:'손상 범위 실측·사진대지 작성, 구조 안전성 검토 후 보수공법 결정'}],
+ logicTitle:'면적비 정량 등급 — D-01 · D-02 · D-06',
+ logic:[
+  {t:'검출 박스 면적의 합이 화면 전체에서 차지하는 비율로 등급을 매깁니다.'},
+  {t:'1% 미만 경미 / 1~5% 보통 / 5% 이상 중대. 같은 유형이라도 범위에 따라 조치 수준이 달라지므로 정량 지표를 함께 붙입니다.'},
+  {t:'촬영 거리에 따라 면적비가 달라지므로 등급은 참고값이며, 균열 폭 등 실제 치수는 실측으로 확정합니다.'}],
+ output:'하자 유형·위치·면적비 등급, 근거 기준, 보수 조치사항, 이전 점검 대비 해소·잔존·신규 판정 및 시정 완료율',
+ limit:'균열 폭 실측은 불가(위치 특정까지). 보온 미시공·지지대 간격·스프링클러 이격 등 MEP 고유 항목은 공개 데이터 부재로 미포함.'},
+
+{key:'product',code:'PRODUCT',ko:'생산 품질검사',weights:'runs/product_yolo11n_416',
+ pipe:[
+  {n:'01',tag:'입력',title:'제품 촬영 이미지',body:'라인 고정 카메라 또는 태블릿 촬영 이미지를 사용합니다.'},
+  {n:'02',tag:'검출',title:'7개 클래스 검출',body:'양품과 불량 6유형을 구분해 위치와 함께 검출합니다.'},
+  {n:'03',tag:'판정',title:'불량 유형별 판정',body:'치명 불량은 임계값을 낮춰 미검출을 줄이는 방향으로 설정합니다.'},
+  {n:'04',tag:'산출',title:'선별 결과 · 로트 이력',body:'검사원 확인 대상 지점과 로트 단위 발생 이력을 남깁니다.'}],
+ classes:[
+  {cls:'ok',ko:'양품',conf:REF,why:'양품 참조 — 지적사항으로 채택하지 않음'},
+  {cls:'dry_joint',ko:'접합 불량(냉납)',conf:'0.35',why:'재작업 유발 — 오탐 시 생산성 저하'},
+  {cls:'incorrect_install',ko:'조립·삽입 불량',conf:'0.30',why:'치명 불량 — 재현율 우선'},
+  {cls:'board_damage',ko:'기판·부품 손상',conf:'0.35',why:'표준'},
+  {cls:'short_circuit',ko:'단락(쇼트)',conf:'0.30',why:'안전 직결 — 재현율 우선'},
+  {cls:'surface_defect',ko:'표면 결함(접힘·스크래치·이물)',conf:'0.35',why:'표준'},
+  {cls:'cell_anomaly',ko:'셀 이상(결함·음영)',conf:'0.35',why:'표준'}],
+ rules:[
+  {id:'P-01',title:'접합 불량 (냉납)',risk:3,cond:'dry_joint 0.35 이상 검출',basis:'IPC-A-610 Class 2 / 사내 공정검사 기준서',action:'해당 접합부 재작업 후 재검사, 동일 로트 전수검사 확대 판단'},
+  {id:'P-02',title:'조립·삽입 불량 (오삽입·방향 오류)',risk:3,cond:'incorrect_install 0.30 이상 검출',basis:'IPC-A-610 실장 방향·위치 기준 / 제조물 책임법 제3조',action:'해당 부품 재실장, 작업표준서 재교육 및 초·중·종물 검사 강화'},
+  {id:'P-03',title:'기판·부품 손상',risk:2,cond:'board_damage 0.35 이상 검출',basis:'IPC-A-610 기판 손상 허용 한계',action:'손상 정도 판정 후 폐기 또는 수리, 취급·이송 공정 원인 조사'},
+  {id:'P-04',title:'단락 (쇼트)',risk:4,cond:'short_circuit 0.30 이상 검출',basis:'IPC-A-610 / 전기용품 및 생활용품 안전관리법',action:'즉시 격리, 절연저항 측정 및 원인 공정 추적, 동일 로트 홀드'},
+  {id:'P-05',title:'표면 결함 (접힘·스크래치·이물)',risk:2,cond:'surface_defect 0.35 이상 검출',basis:'사내 외관검사 기준 / KS A ISO 2859-1',action:'외관 등급 판정 후 선별, 발생 공정 및 취급 방법 개선'},
+  {id:'P-06',title:'셀 이상 (결함·음영)',risk:3,cond:'cell_anomaly 0.35 이상 검출',basis:'셀 외관·EL 검사 기준 / KS C IEC 61215 계열',action:'이상 셀 격리 후 정밀검사, 동일 트레이 전수 재검'}],
+ logicTitle:'',logic:[],
+ output:'불량 유형·위치·신뢰도, 검사원 확인 대상 지점, 로트 단위 발생 이력, 홀드·전수검사 판단 근거',
+ limit:'공개 PCB 데이터 기반이므로 사내 제품군 이미지로 재학습이 필요합니다. 단락·기판 손상은 현재 검출 성능 미달로 참조 수준입니다.'},
+
+{key:'polarity',code:'POLARITY',ko:'2차전지 셀 선별',weights:'runs/polarity_yolo11n_416',
+ pipe:[
+  {n:'01',tag:'입력',title:'트레이 단위 촬영',body:'셀 개별 확인 대신 트레이 전체를 1장으로 촬영합니다.'},
+  {n:'02',tag:'검출',title:'셀 단위 극성 검출',body:'셀마다 정렬 정상 / 극성 반전을 구분해 좌표와 함께 검출합니다.'},
+  {n:'03',tag:'판정',title:'역극 판정',body:'반전 셀은 임계값 0.25로 판정합니다. 전 항목 중 가장 낮은 값입니다.'},
+  {n:'04',tag:'산출',title:'격리 대상 셀 목록',body:'셀 위치가 좌표로 남아 몇 번째 셀이었는지 이력 추적이 가능합니다.'}],
+ classes:[
+  {cls:'cell_ok',ko:'정렬 정상 셀',conf:'0.40',why:'양품 판정은 보수적으로 — 잘못된 정상 판정을 줄이기 위함'},
+  {cls:'cell_reversed',ko:'역극 셀 (극성 반전)',conf:'0.25',why:'유출 시 클레임·안전사고 — 재현율 최우선'}],
+ rules:[
+  {id:'X-01',title:'역극(逆極) 셀 — 극성 반전 배열',risk:4,cond:'cell_reversed 0.25 이상 검출',basis:'셀 선별 작업표준 — 극성 방향 정렬 / KS C IEC 62133 (역접속 방지)',action:'해당 셀 즉시 격리·교체, 트레이 전수 재검, 라인 조장 최종 확인 후 출고'}],
+ logicTitle:'양품·불량 임계값을 다르게 두는 이유',
+ logic:[
+  {t:'역극 셀은 0.25로 낮게, 정상 셀은 0.40으로 높게 설정합니다. 방향이 서로 반대인 정책입니다.'},
+  {t:'역극은 놓치면 유출로 이어지므로 의심 수준에서도 올립니다. 정상은 확실할 때만 정상으로 확정합니다.'},
+  {t:'결과적으로 정상으로 확정되지 않은 셀이 육안 재검 대상으로 남습니다. 전수 육안 검사량이 재검 대상 확인으로 축소됩니다.'}],
+ output:'셀별 판정 결과와 트레이 내 좌표, 격리 대상 셀 목록, 재검 대상 셀 목록',
+ limit:'합성 데이터로 방법론을 검증한 단계입니다. 도입 시 실제 양품·역극 셀 이미지로 재학습이 필요합니다.'},
+
+{key:'logistics',code:'LOGISTICS',ko:'물류·운송 관리',weights:'runs/logistics_yolo11n_416',
+ pipe:[
+  {n:'01',tag:'입력',title:'야드·상하차장 이미지',body:'설치 카메라 이미지 또는 현장 촬영 사진을 사용합니다.'},
+  {n:'02',tag:'검출',title:'6개 클래스 검출',body:'지게차·작업자·섀시 적재 상태를 동시에 검출합니다.'},
+  {n:'03',tag:'판정',title:'객체 간 거리 판정',body:'지게차 작업반경과 작업자 박스의 겹침으로 협착 위험을 판정합니다.'},
+  {n:'04',tag:'산출',title:'위험 알림 · 작업 현황',body:'협착 위험 알림과 섀시 상태 기반 작업 현황을 기록합니다.'}],
+ classes:[
+  {cls:'forklift',ko:'지게차',conf:'0.35',why:'표준 — 작업반경 산정 기준 객체'},
+  {cls:'worker',ko:'작업자',conf:'0.30',why:'협착 위험 판정 입력 — 재현율 우선'},
+  {cls:'chassis_loaded',ko:'적재 섀시',conf:REF,why:'적재 상태 기록'},
+  {cls:'chassis_empty',ko:'공차 섀시',conf:REF,why:'공차 상태 기록'},
+  {cls:'chassis_working',ko:'상하차 진행 중',conf:'0.45',why:'상태 판정 — 정밀도 우선'},
+  {cls:'stacker',ko:'스태커',conf:REF,why:'학습 데이터 부족 — 현재 미검출'}],
+ rules:[
+  {id:'L-01',title:'지게차 작업반경 내 보행 작업자',risk:4,cond:'지게차 박스를 좌우 35%·상하 17.5% 확장한 영역과 작업자 박스가 35% 이상 겹칠 때',basis:'산업안전보건기준에 관한 규칙 제172조 · 제39조',action:'즉시 작업중지 및 작업자 대피, 유도자 배치·통제선 설치 후 재개, 동선 분리 점검'},
+  {id:'L-02',title:'상하차 작업 진행 중 — 구역 통제 확인',risk:1,cond:'chassis_working 0.45 이상 검출',basis:'동 규칙 제39조 (하역운반기계등에 의한 위험 방지)',action:'작업구역 통제선·유도자 배치 상태 확인'}],
+ logicTitle:'협착 위험 판정 방식',
+ logic:[
+  {t:'지게차 박스를 좌우로 폭의 35%, 상하로 높이의 17.5%만큼 확장한 영역을 작업반경으로 사용합니다.'},
+  {t:'그 영역과 작업자 박스의 겹침이 35% 이상이면 협착 위험으로 판정합니다.'},
+  {t:'단안 카메라이므로 실제 거리는 측정하지 않고 화면상 근접을 위험 신호로 사용합니다. 카메라 각도에 따라 판정이 달라질 수 있습니다.'},
+  {t:'지게차와 작업자를 각각 검출하는 것만으로는 이 판정이 산출되지 않습니다. 두 객체의 관계가 판정 입력입니다.'}],
+ output:'협착 위험 알림(검출 좌표 포함), 섀시 적재·공차·상하차 상태, 작업구역 통제 확인 항목',
+ limit:'실제 이격 거리 미측정(단안 기준 화면상 근접). 스태커는 학습 데이터 부족으로 검출되지 않습니다. 작업자 클래스의 검출률이 낮아 재현율 개선이 필요합니다.'},
+
+{key:'parking',code:'PARKING',ko:'주차 운영관리',weights:'runs/parking_yolo11n_416',
+ pipe:[
+  {n:'01',tag:'입력',title:'층별 카메라 이미지',body:'기설치된 주차장 카메라 이미지를 사용합니다.'},
+  {n:'02',tag:'검출',title:'3개 차종 검출',body:'승용·버스·트럭을 구분해 검출합니다.'},
+  {n:'03',tag:'판정',title:'차종별 점유 집계',body:'구획별 점유 대수를 차종별로 집계합니다.'},
+  {n:'04',tag:'산출',title:'점유 현황 기록',body:'대형차 전용구획 초과 여부를 판단할 수 있는 형태로 기록합니다.'}],
+ classes:[
+  {cls:'car',ko:'승용차',conf:'0.35',why:'표준'},
+  {cls:'bus',ko:'버스',conf:'0.35',why:'표준'},
+  {cls:'truck',ko:'트럭',conf:'0.35',why:'표준'}],
+ rules:[
+  {id:'K-01',title:'주차 점유 현황 집계',risk:1,cond:'car·bus·truck 0.35 이상 검출 시 차종별 집계',basis:'주차장법 시행규칙 제6조 (주차장의 구조·설비기준)',action:'차종별 점유 현황 기록, 대형차 전용구획 초과 시 배치 조정'}],
+ logicTitle:'',logic:[],
+ output:'차종별 점유 대수, 구획별 점유 현황, 시간대별 기록',
+ limit:'차량이 서로 가려지는 구획에서는 과소 집계될 수 있습니다. 구획 단위 매핑은 카메라별 좌표 설정이 필요합니다.'}
+];
+
+const KO = {person:'작업자',helmet:'안전모 착용',no_helmet:'안전모 미착용',vest:'안전조끼 착용',no_vest:'안전조끼 미착용',goggles:'보안경 착용',no_goggles:'보안경 미착용',gloves:'안전장갑 착용',no_gloves:'안전장갑 미착용',cone:'안전콘',smoke:'연기',corrosion:'부식',crack:'균열',cable_damage:'케이블 손상',weld_bad:'용접 불량',weld_good:'용접 양호',weld_defect:'용접 결함부',wall_damage:'벽체 손상',ok:'양품',incorrect_install:'조립 불량',dry_joint:'냉납',board_damage:'기판 손상',short_circuit:'단락',surface_defect:'표면 결함',cell_anomaly:'셀 이상',cell_ok:'정렬 정상 셀',cell_reversed:'역극 셀',forklift:'지게차',worker:'작업자',chassis_loaded:'적재 섀시',chassis_empty:'공차 섀시',chassis_working:'상하차 진행',stacker:'스태커',car:'승용차',truck:'트럭',bus:'버스'};
+const THRESH = {no_helmet:.25,no_vest:.30,no_goggles:.30,no_gloves:.30,smoke:.55,corrosion:.35,crack:.30,cable_damage:.35,weld_bad:.35,weld_defect:.35,wall_damage:.35,dry_joint:.35,incorrect_install:.30,board_damage:.35,short_circuit:.30,surface_defect:.35,cell_anomaly:.35,cell_ok:.40,cell_reversed:.25,forklift:.35,worker:.30,chassis_working:.45,car:.35,bus:.35,truck:.35};
+const TH = (c) => THRESH[c] !== undefined ? THRESH[c] : 0.25;
+const RULE_OF = {};
+D.forEach(d => d.rules.forEach(r => { RULE_OF[r.id] = {title:r.title, risk:r.risk}; }));
+const CLS2RULE = {no_helmet:'S-01',no_vest:'S-02',no_goggles:'S-03',no_gloves:'S-04',smoke:'S-05',
+  corrosion:'D-01',crack:'D-02',cable_damage:'D-03',weld_bad:'D-04',weld_defect:'D-05',wall_damage:'D-06',
+  dry_joint:'P-01',incorrect_install:'P-02',board_damage:'P-03',short_circuit:'P-04',surface_defect:'P-05',cell_anomaly:'P-06',
+  cell_reversed:'X-01',chassis_working:'L-02'};
+const ov = (inner, outer) => {
+  const x1 = Math.max(inner[0], outer[0]), y1 = Math.max(inner[1], outer[1]);
+  const x2 = Math.min(inner[2], outer[2]), y2 = Math.min(inner[3], outer[3]);
+  if (x2 <= x1 || y2 <= y1) return 0;
+  const a = (inner[2]-inner[0]) * (inner[3]-inner[1]);
+  return a <= 0 ? 0 : ((x2-x1)*(y2-y1)) / a;
+};
+// 관계 추론 — rules.py derive_ppe_findings 와 동일 조건
+const derivePPE = (dets) => {
+  const persons = dets.filter(x => x.c === 'person' && x.p >= 0.35 &&
+    (x.b[2]-x.b[0]) * (x.b[3]-x.b[1]) >= 0.04);
+  if (!persons.length) return [];
+  const worn = {helmet: dets.filter(x=>x.c==='helmet').map(x=>x.b),
+                vest: dets.filter(x=>x.c==='vest').map(x=>x.b)};
+  const direct = new Set(dets.filter(x => x.p >= TH(x.c)).map(x => x.c));
+  const zones = [['helmet','no_helmet',0,0.35],['vest','no_vest',0.20,0.75]];
+  const out = [];
+  zones.forEach(([okc, ngc, t0, t1]) => {
+    if (direct.has(ngc)) return;
+    let n = 0;
+    persons.forEach(p => {
+      const h = p.b[3]-p.b[1];
+      const zone = [p.b[0], p.b[1]+h*t0, p.b[2], p.b[1]+h*t1];
+      if (worn[okc].some(b => ov(b, zone) >= 0.3)) return;
+      n++;
+    });
+    if (n) out.push({id:CLS2RULE[ngc], n, how:'관계 추론'});
+  });
+  return out;
+};
+// 관계 추론 — rules.py derive_logistics_findings 와 동일 조건
+const deriveLogi = (dets) => {
+  const forks = dets.filter(x => x.c === 'forklift' && x.p >= TH('forklift'));
+  const workers = dets.filter(x => x.c === 'worker' && x.p >= TH('worker'));
+  let n = 0;
+  forks.forEach(f => {
+    const w = f.b[2]-f.b[0], h = f.b[3]-f.b[1];
+    const zone = [f.b[0]-w*0.35, f.b[1]-h*0.175, f.b[2]+w*0.35, f.b[3]+h*0.175];
+    workers.forEach(k => { if (ov(k.b, zone) >= 0.35) n++; });
+  });
+  return n ? [{id:'L-01', n, how:'관계 추론'}] : [];
+};
+
+class Component extends DCLogic {
+  state = {sel:{}, weak:{}, role:0};
+
+
+  chip(color, bg){
+    return {fontSize:'11.5px',fontWeight:700,letterSpacing:'-.02em',borderRadius:'8px',
+            padding:'3px 9px',color:color,background:bg,whiteSpace:'nowrap',textAlign:'center'};
+  }
+
+  panel(d){
+    const det = DET;
+    const ids = Object.keys(det).filter(k => det[k].task === d.key);
+    const cur = this.state.sel[d.key] || ids[0];
+    const it = det[cur];
+    const weak = !!this.state.weak[d.key];
+
+    const boxes = it.det.filter(x => weak ? x.p >= 0.05 : x.p >= TH(x.c)).slice(0,20).map((x,i) => {
+      const adopted = x.p >= TH(x.c);
+      const isBad = !!CLS2RULE[x.c];
+      const col = !adopted ? '#b0b8c1' : (isBad ? (RULE_OF[CLS2RULE[x.c]] && RULE_OF[CLS2RULE[x.c]].risk === 4 ? '#f04452' : '#ff8a00') : '#15b57b');
+      const top = x.b[1]*100;
+      return {key:i,
+        label:(KO[x.c]||x.c)+'  '+Math.round(x.p*100)+'%',
+        style:{position:'absolute', left:(x.b[0]*100)+'%', top:top+'%',
+               width:((x.b[2]-x.b[0])*100)+'%', height:((x.b[3]-x.b[1])*100)+'%',
+               border:(adopted?'2.5px':'1.5px')+' '+(adopted?'solid':'dashed')+' '+col,
+               borderRadius:'4px', opacity: adopted ? 1 : .7, pointerEvents:'none'},
+        tag:Object.assign({position:'absolute', top: top < 7 ? '2px' : '-18px', background:col, color:'#fff',
+             font:'700 11px Pretendard,sans-serif', letterSpacing:'-.02em', padding:'0 6px',
+             borderRadius:'5px', whiteSpace:'nowrap', lineHeight:'16px'},
+             x.b[2] > 0.7 ? {right:'-2.5px'} : {left:'-2.5px'})};
+    });
+
+    const counts = {};
+    it.det.forEach(x => { if (x.p >= TH(x.c)) counts[x.c] = (counts[x.c]||0)+1; });
+    let found = Object.keys(counts).filter(c => CLS2RULE[c]).map(c => ({id:CLS2RULE[c], n:counts[c], how:'직접 검출'}));
+    if (d.key === 'safety') found = found.concat(derivePPE(it.det));
+    if (d.key === 'logistics') found = found.concat(deriveLogi(it.det));
+    if (d.key === 'parking'){
+      const n = ['car','bus','truck'].reduce((s,c) => s + (counts[c]||0), 0);
+      if (n) found.push({id:'K-01', n, how:'집계'});
+    }
+    const findings = found.map((f,i) => {
+      const r = RULE_OF[f.id] || {title:f.id, risk:1};
+      return {key:i, id:f.id, title:r.title+' · '+f.n+'건', risk:RISK_KO[r.risk],
+              chip:this.chip(HUE[r.risk], HUE_BG[r.risk]),
+              tag:this.chip(f.how === '직접 검출' ? '#8b95a1' : '#3182f6', f.how === '직접 검출' ? '#f2f4f6' : '#e8f2fe'),
+              how:f.how};
+    });
+    const maxRisk = found.reduce((m,f) => Math.max(m, (RULE_OF[f.id]||{risk:0}).risk||0), 0);
+    const verdict = maxRisk >= 3 ? '부적합' : maxRisk === 2 ? '조건부적합' : '적합';
+    const vcol = maxRisk >= 3 ? '#f04452' : maxRisk === 2 ? '#f5a623' : '#15b57b';
+
+    const rows = it.det.slice(0,10).map((x,i) => {
+      const adopted = x.p >= TH(x.c);
+      return {key:i, cls:x.c, ko:KO[x.c]||x.c, p:x.p.toFixed(2), th:TH(x.c).toFixed(2),
+              state: adopted ? '채택' : '미채택',
+              chip:Object.assign(this.chip(adopted ? '#0f9d6b' : '#8b95a1', adopted ? '#e6f7f0' : '#f2f4f6'),
+                                 {fontSize:'11px', padding:'2px 7px'})};
+    });
+
+    return {
+      thumbs: ids.map(id => ({
+        key:id, pick: () => this.setState(s => ({sel:Object.assign({}, s.sel, {[d.key]:id})})),
+        style:{width:'56px', height:'44px', flex:'0 0 56px', padding:0, cursor:'pointer', borderRadius:'10px',
+               backgroundImage:'url('+IMG[id]+')', backgroundSize:'cover', backgroundPosition:'center',
+               border:'none', outline: id === cur ? '2.5px solid #3182f6' : '1px solid #e5e8eb',
+               outlineOffset: id === cur ? '1px' : '-1px', opacity: id === cur ? 1 : .6}
+      })),
+      shotStyle:{position:'relative', width:'100%', aspectRatio:it.w+' / '+it.h, overflow:'hidden',
+                 borderRadius:'14px', backgroundColor:'#e5e8eb',
+                 backgroundImage:'url('+IMG[cur]+')', backgroundSize:'100% 100%'},
+      boxes, rows, findings, verdict,
+      summary:'검출 '+it.det.length+' · 채택 '+Object.values(counts).reduce((a,b)=>a+b,0),
+      verdictStyle:{fontSize:'15px',fontWeight:800,letterSpacing:'-.03em',borderRadius:'999px',
+                    padding:'5px 15px',color:'#fff',background:vcol},
+      toggleWeak: () => this.setState(s => ({weak:Object.assign({}, s.weak, {[d.key]:!s.weak[d.key]})})),
+      weakLabel: weak ? '미채택 표시 켜짐' : '미채택 표시',
+      weakStyle:{font:'700 12.5px Pretendard,sans-serif', letterSpacing:'-.02em', padding:'7px 13px',
+                 cursor:'pointer', borderRadius:'10px', border:'none', whiteSpace:'nowrap',
+                 color: weak ? '#fff' : '#4e5968', background: weak ? '#3182f6' : '#e5e8eb'},
+      foot:'점선 회색 = 임계값 미만 · 지적사항 제외'
+    };
+  }
+
+  renderVals(){
+    return {
+      nav: D.map((d,i) => ({
+        key:d.key, code:d.code, ko:d.ko, one:d.pipe[1] ? d.pipe[1].title : '',
+        pick: () => this.setState({role:i}),
+        style:{display:'block', width:'100%', textAlign:'left', font:'inherit', cursor:'pointer',
+               padding:'12px 14px', borderRadius:'14px', border:'none',
+               background: i === this.state.role ? '#f2f4f6' : 'transparent',
+               color: i === this.state.role ? '#191f28' : '#4e5968'}
+      })),
+      blocks: [D[Math.min(this.state.role, D.length-1)]].map(d => Object.assign({
+        key:d.key, code:d.code, ko:d.ko, weights:d.weights,
+        pipe: d.pipe.map(p => ({key:p.n, n:p.n, tag:p.tag, title:p.title, body:p.body})),
+        classes: d.classes.map(c => ({key:c.cls, cls:c.cls, ko:c.ko, conf:c.conf, why:c.why})),
+        rules: d.rules.map(r => ({
+          key:r.id, id:r.id, title:r.title, cond:r.cond, basis:r.basis, action:r.action,
+          risk: RISK_KO[r.risk],
+          chip:{fontSize:'11.5px',fontWeight:700,letterSpacing:'-.02em',borderRadius:'8px',
+                padding:'3px 9px',color:HUE[r.risk],background:HUE_BG[r.risk],whiteSpace:'nowrap'}
+        })),
+        hasLogic: d.logic.length > 0,
+        logicTitle: d.logicTitle,
+        logic: d.logic.map((l,i) => ({key:i, t:l.t})),
+        output: d.output, limit: d.limit
+      }, this.panel(d)))
+    };
+  }
+}
+
+  DC.mount(root, Component);
+})();
+</script>
+</body>
+</html>
